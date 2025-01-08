@@ -1,0 +1,61 @@
+/* Style for the leave application container */
+.container {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+}
+
+/* Table styling */
+.table {
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 20px;
+}
+
+/* Header styling for the table */
+.table th {
+  background-color: #007bff;
+  color: white;
+  text-align: center;
+  font-size: 16px;
+}
+
+/* Hover effect for rows */
+.table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Table row styling */
+.table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.table tbody tr:nth-child(odd) {
+  background-color: #fff;
+}
+
+/* Button styling */
+.btn {
+  padding: 8px 15px;
+  font-size: 14px;
+}
+
+.btn-success {
+  background-color: #28a745;
+  border: none;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border: none;
+}
+
+.btn-warning {
+  background-color: #ffc107;
+  border: none;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}

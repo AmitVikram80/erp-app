@@ -1,0 +1,66 @@
+/* Admin.module.css */
+.adminContainer {
+  padding: 40px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: auto;
+}
+
+.tableHeader {
+  background-color: #007bff;
+  color: white;
+}
+
+.tableHeader th {
+  font-weight: 600;
+  text-align: center;
+}
+
+.tableBody td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.tableBody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.tableActions button {
+  margin-right: 10px;
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 5px;
+}
+
+.btnApprove {
+  background-color: #28a745;
+  color: white;
+  border: none;
+}
+
+.btnReject {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+}
+
+.btnApprove:hover {
+  background-color: #218838;
+}
+
+.btnReject:hover {
+  background-color: #c82333;
+}
+
+h1 {
+  color: #007bff;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.loader {
+  text-align: center;
+  font-size: 18px;
+  color: #007bff;
+}
