@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axiosInstance from '../../api/axiosInstance';
+import axiosInstance from '../../../api/axiosInstance';
 
 const CalcPayroll = () => {
   const [form, setForm] = useState({
@@ -19,7 +19,7 @@ const CalcPayroll = () => {
     axiosInstance.post(`/payroll/calculate?employeeId=${form.employeeId}&salaryDate=${form.salaryDate}`)
       .then((response) => {
         alert(`Payroll calculated: ${response.data.netSalary}`);
-        navigate('/payrolls'); 
+        navigate('/admin-dashboard/payrolls'); 
       })
       .catch((error) => console.error(error));
   };
