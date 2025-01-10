@@ -81,7 +81,7 @@ const MedicalEntryList = () => {
                                 <td>
                                     <button
                                         className="btn btn-primary btn-sm"
-                                        onClick={() => navigate(`/edit-medical-entry/${entry.medicalEntryId}/${entry.dependantId}`)}
+                                        onClick={() => navigate(`/admin-dashboard/edit-medical-entry/${entry.medicalEntryId}/${entry.dependantId}`)}
                                         disabled={entry.status === "REJECTED" || entry.status === "APPROVED"} 
                                     >
                                         Edit

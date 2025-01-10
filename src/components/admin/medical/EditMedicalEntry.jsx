@@ -107,7 +107,7 @@ const EditMedicalEntry = () => {
                                     <button
                                         type="button"
                                         className="btn btn-secondary"
-                                        onClick={() => navigate(`/medical-entry-list`)}
+                                        onClick={() => navigate(`/admin-dashboard/medical-entry-list`)}
                                     >
                                         Cancel
                                     </button>
