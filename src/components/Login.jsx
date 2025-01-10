@@ -17,9 +17,9 @@ const Login = () => {
       localStorage.setItem('token', response.data);
 
       if (role === 'admin') {
-        navigate('/admin-dashboard/overview');
+        navigate('/admin-dashboard/');
       } else {
-        navigate('/employee-dashboard/profile');
+        navigate('/user-dashboard/');
       }
     } catch (error) {
       console.error('Error logging in:', error);

@@ -3,14 +3,14 @@ import { Routes, Route } from 'react-router-dom';
 import Home from './Home';
 import Login from './Login';
 import AdminDashboard from './admin/AdminDashboard';
-import EmployeeDashboard from './user/EmployeeDashboard';
+import UserDashboard from './user/UserDashboard';
 
 const RoutesConfig = () => (
   <Routes>
     <Route path="/" element={<Home />} />
     <Route path="/login" element={<Login />} />
     <Route path="/admin-dashboard/*" element={<AdminDashboard />} />
-    <Route path="/employee-dashboard/*" element={<EmployeeDashboard />} />
+    <Route path="/user-dashboard/*" element={<UserDashboard />} />
   </Routes>
 );
 

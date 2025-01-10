@@ -24,7 +24,7 @@ const AdminDashboard = () => {
       <AdminHeader />
       <main>
         <Routes>
-          <Route path='overview' element={<AdminHome />} />
+          <Route path='/' element={<AdminHome />} />
           <Route path='employees' element={<EmployeeList />} />
           <Route path="add-employee" element={<PrivateRoute><AddEmployee /></PrivateRoute>} />
           <Route path="edit-employee" element={<PrivateRoute><UpdateEmployee /></PrivateRoute>} />

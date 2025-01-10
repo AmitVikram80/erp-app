@@ -17,7 +17,7 @@ const AdminHeader = () => {
                         <ul className="navbar-nav">
                             <li className="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle" href="#" id="employeeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Employees
+                                    Admin
                                 </a>
                                 <ul className="dropdown-menu" aria-labelledby="employeeDropdown">
                                     <li><Link className="dropdown-item" to="/admin-dashboard/employees">Employee List</Link></li>
