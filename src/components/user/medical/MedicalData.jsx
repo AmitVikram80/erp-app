@@ -16,8 +16,8 @@ const MedicalData = () => {
 
                 const dependantsResponse = await axiosInstance.get(`user/dependant/employee`);
                 setDependants(dependantsResponse.data);
-
-                const billsResponse = await axiosInstance.get(`/user/medical-entry/employee`);
+                console.log(dependants)
+                const billsResponse = await axiosInstance.get(`user/medical-entry/employee`);
                 setBills(billsResponse.data);
             } catch (error) {
                 console.error("Error fetching data:", error);
@@ -27,8 +27,32 @@ const MedicalData = () => {
         fetchAllData();
     }, []);
 
+    const getStatusBadgeClass = (status) => {
+        switch (status) {
+            case "APPROVED":
+                return "bg-success";
+            case "REJECTED":
+                return "bg-danger";
+            case "SUBMITTED":
+                return "bg-primary";
+            default:
+                return "bg-secondary";
+        }
+    };
+
+    const getActionBadgeClass = (status) => {
+        switch (status) {
+          case "APPROVED":
+            return "bg-success";    
+          case "REJECTED":
+            return "bg-danger";    
+          default:
+            return "bg-secondary";  
+        }
+      };
+
     const edit = (medicalEntryId, dependantId) => {
-        navigate(`/edit-medical-entry/${medicalEntryId}/${dependantId}`);
+        navigate(`/user-dashboard/edit-medical-entry/${medicalEntryId}/${dependantId}`);
     };
 
     return (
@@ -107,16 +131,24 @@ const MedicalData = () => {
                                             "No file available"
                                         )}
                                     </td>
-                                    <td>{bill.status || "Pending"}</td>
                                     <td>
-                                        {bill.isApproved ? (
-                                            <span className="badge bg-success">Approved</span>
-                                        ) : (
-                                            <button className="btn btn-outline-warning" onClick={() => edit(bill.medicalEntryId, bill.dependant?.dependantId)}
-                                            disabled={bill.status === "REJECTED" || bill.status === "APPROVED"} 
+                                        <span className={`badge ${getStatusBadgeClass(bill.status)}`}>
+                                            {bill.status}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        {bill.status === "SUBMITTED" ? (
+                                            <button
+                                                className="btn btn-outline-warning"
+                                                onClick={() => edit(bill.medicalEntryId, bill.dependantId)}
+                                                title="Edit this entry"
                                             >
                                                 Edit
                                             </button>
+                                        ) : (
+                                            <span className={`badge ${getActionBadgeClass(bill.status)}`}>
+                                                {bill.status === "APPROVED" ? "No action needed" : "Cannot edit"}
+                                            </span>
                                         )}
                                     </td>
                                 </tr>

@@ -79,6 +79,7 @@ const MedicalApprovalList = () => {
             <th>Medical Entry ID</th>
             <th>Approved Amount</th>
             <th>Approval Date</th>
+            <th>Manager Id</th>
           </tr>
         </thead>
         <tbody>
@@ -88,6 +89,7 @@ const MedicalApprovalList = () => {
               <td>{claim.medicalEntryId}</td>
               <td>{claim.approvedAmount}</td>
               <td>{claim.approvalDate}</td>
+              <td>{claim.adminId}</td>
             </tr>
           ))}
         </tbody>

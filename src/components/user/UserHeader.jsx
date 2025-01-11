@@ -33,6 +33,17 @@ const UserHeader = () => {
                   <li><Link className="dropdown-item" to="/user-dashboard/add-medical-entry">Add Medical Entry</Link></li>
                 </ul>
               </li>
+              <li className="nav-item dropdown">
+                <a className="nav-link dropdown-toggle" href="#" id="employeeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Leave
+                </a>
+                <ul className="dropdown-menu" aria-labelledby="employeeDropdown">
+                  <li><Link className="dropdown-item" to="/user-dashboard/leave-data">Leave Data</Link></li>
+                  <li><Link className="dropdown-item" to="/user-dashboard/apply-leave">Apply Leave</Link></li>
+                  <li><Link className="dropdown-item" to="/user-dashboard/apply-compensatory-leave">Apply Compensatory Leave</Link></li>
+                  <li><Link className="dropdown-item" to="/user-dashboard/compensatory-leave">Compensatory Leave</Link></li>
+                </ul>
+              </li>
 
             </ul>
 

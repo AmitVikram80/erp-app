@@ -91,8 +91,8 @@ const ModifyLeave = () => {
         setTimeout(() => {
           navigate(
             isCompensatoryLeave
-              ? "/compensatory-leave"
-              : `/leave-data/${empId}`,
+              ? "/user-dashboard/compensatory-leave"
+              : `/user-dashboard/leave-data`,
             {
               state: { refresh: true },
             }

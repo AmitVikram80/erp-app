@@ -28,6 +28,30 @@ const EmployeeMedicalData = () => {
         fetchAllData();
     }, [empId]);
 
+    const getStatusBadgeClass = (status) => {
+        switch (status) {
+            case "APPROVED":
+                return "bg-success";
+            case "REJECTED":
+                return "bg-danger";
+            case "SUBMITTED":
+                return "bg-primary";
+            default:
+                return "bg-secondary";
+        }
+    };
+
+    const getActionBadgeClass = (status) => {
+        switch (status) {
+          case "APPROVED":
+            return "bg-success";    
+          case "REJECTED":
+            return "bg-danger";    
+          default:
+            return "bg-secondary";  
+        }
+      };
+
     const edit = (medicalEntryId, dependantId) => {
         navigate(`/edit-medical-entry/${medicalEntryId}/${dependantId}`);
     };
@@ -108,16 +132,38 @@ const EmployeeMedicalData = () => {
                                             "No file available"
                                         )}
                                     </td>
-                                    <td>{bill.status || "Pending"}</td>
                                     <td>
-                                        {bill.isApproved ? (
-                                            <span className="badge bg-success">Approved</span>
+                                        {bill.medicalFiles ? (
+                                            <a
+                                                href={`data:application/pdf;base64,${bill.medicalFiles}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="btn btn-link secondary-text"
+                                            >
+                                                View File
+                                            </a>
                                         ) : (
-                                            <button className="btn btn-outline-warning" onClick={() => edit(bill.medicalEntryId, bill.dependant?.dependantId)}
-                                            disabled={bill.status === "REJECTED" || bill.status === "APPROVED"} 
+                                            "No file available"
+                                        )}
+                                    </td>
+                                    <td>
+                                        <span className={`badge ${getStatusBadgeClass(bill.status)}`}>
+                                            {bill.status}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        {bill.status === "SUBMITTED" ? (
+                                            <button
+                                                className="btn btn-outline-warning"
+                                                onClick={() => edit(bill.medicalEntryId, bill.dependantId)}
+                                                title="Edit this entry"
                                             >
                                                 Edit
                                             </button>
+                                        ) : (
+                                            <span className={`badge ${getActionBadgeClass(bill.status)}`}>
+                                                {bill.status === "APPROVED" ? "No action needed" : "Cannot edit"}
+                                            </span>
                                         )}
                                     </td>
                                 </tr>

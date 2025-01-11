@@ -18,10 +18,6 @@ import AddMedicalEntry from './medical/AddMedicalEntry';
 import EditMedicalEntry from './medical/EditMedicalEntry';
 import EmployeeMedicalData from './medical/EmployeeMedicalData';
 import LeaveApplication from './leave/LeaveApplication';
-import ApplyLeave from './leave/ApplyLeave';
-import ModifyLeave from './leave/ModifyLeave';
-import ApplyCompensatoryLeave from './leave/ApplyCompensatoryLeave';
-import CompensatoryLeave from './leave/CompensatoryLeave';
 import SanctionLeave from './leave/SanctionLeave';
 import LeaveAdmin from './leave/LeaveAdmin';
 
@@ -47,15 +43,9 @@ const AdminDashboard = () => {
           <Route path="add-medical-entry" element={<PrivateRoute><AddMedicalEntry /></PrivateRoute>} />
           <Route path="edit-medical-entry/:medicalEntryId/:dependantId" element={<PrivateRoute><EditMedicalEntry /></PrivateRoute>} />
           <Route path="emp-medical-data/:empId" element={<PrivateRoute><EmployeeMedicalData /></PrivateRoute>} />
-
           <Route path="leave-data/:empId" element={<PrivateRoute> <LeaveApplication /> </PrivateRoute>} />
-          <Route path="apply-leave" element={<PrivateRoute> <ApplyLeave /> </PrivateRoute>} />
-          <Route path="modify-leave" element={<PrivateRoute> <ModifyLeave /> </PrivateRoute>} />
-          <Route path="apply-compensatory-leave" element={<PrivateRoute> <ApplyCompensatoryLeave /> </PrivateRoute>} />
-          <Route path="compensatory-leave" element={<PrivateRoute> <CompensatoryLeave /> </PrivateRoute>} />
           <Route path="sanctioned-leaves" element={<PrivateRoute> <SanctionLeave /> </PrivateRoute>} />
           <Route path="admin-leave-data" element={<PrivateRoute> <LeaveAdmin /> </PrivateRoute>} />
-
         </Routes>
       </main>
     </div>

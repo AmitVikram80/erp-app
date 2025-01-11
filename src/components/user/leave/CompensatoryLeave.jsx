@@ -49,7 +49,7 @@ const CompensatoryLeave = () => {
 
   // Handle modify action - navigate to ModifyLeave component with selected leave data
   const handleModify = (leave) => {
-    navigate(`/modify-leave`, {
+    navigate(`/user-dashboard/modify-leave`, {
       state: {
         compensatoryLeaveId: leave.compensatoryLeaveId, // Pass compensatoryLeaveId as leaveRequestId
         empId: leave.empId,
@@ -105,12 +105,6 @@ const CompensatoryLeave = () => {
                   onClick={() => handleModify(leave)}
                 >
                   Modify
-                </button>
-                <button
-                  className="btn btn-danger btn-sm"
-                  onClick={() => handleDelete(leave.compensatoryLeaveId)}
-                >
-                  Delete
                 </button>
               </td>
             </tr>

@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "../../../css/ApplyLeave.module.css";
 import axiosInstance from "../../../api/axiosInstance";
 import { useNavigate } from "react-router-dom";
 
 const ApplyLeave = () => {
-  const [empId, setEmpId] = useState("");
   const [employeeDetails, setEmployeeDetails] = useState(null);
   const [formData, setFormData] = useState({
     startDate: "",
@@ -15,24 +14,25 @@ const ApplyLeave = () => {
   });
   const navigate = useNavigate();
 
-  // Fetch Employee Details based on empId
-  const fetchEmployeeDetails = async () => {
-    try {
-      const response = await axiosInstance.get(`/employee/${empId}`);
-      setEmployeeDetails(response.data);
+  useEffect(() => {
+    const fetchEmployeeDetails = async () => {
+      try {
+        const response = await axiosInstance.get(`user/employee/profile`);
+        setEmployeeDetails(response.data);
 
-      // Auto-fill employee name in the form
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        empName: response.data.firstName + " " + response.data.lastName,
-      }));
-    } catch (error) {
-      console.error("Error fetching employee details", error);
-      alert("Employee not found");
-    }
-  };
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          empName: response.data.firstName + " " + response.data.lastName,
+        }));
+      } catch (error) {
+        console.error("Error fetching employee details", error);
+        alert("Failed to fetch employee details.");
+      }
+    };
 
-  // Handle form submission
+    fetchEmployeeDetails();
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -40,17 +40,15 @@ const ApplyLeave = () => {
         startDate: formData.startDate,
         endDate: formData.endDate,
         reason: formData.reason,
-        empName: formData.empName,
         typeOfLeave: formData.typeOfLeave,
-        empId: empId,
       };
 
-      const response = await axiosInstance.post("/addLeave", payload, {
+      const response = await axiosInstance.post("user/addLeave", payload, {
         headers: { "Content-Type": "application/json" },
       });
 
       alert("Leave Application Submitted Successfully!");
-      navigate(`/leave-data/${empId}`);
+      navigate(`/user-dashboard/leave-data`);
     } catch (error) {
       console.error("Error submitting leave application", error);
       alert("Failed to submit leave application.");
@@ -61,20 +59,6 @@ const ApplyLeave = () => {
     <div className={styles.applyLeaveContainer}>
       <h2 className={styles.applyLeaveTitle}>Apply for Leave</h2>
 
-      {/* Employee ID Field */}
-      <div className={styles.formGroup}>
-        <label className={styles.formLabel}>Employee ID:</label>
-        <input
-          type="text"
-          className={styles.formControl}
-          value={empId}
-          onChange={(e) => setEmpId(e.target.value)}
-          onBlur={fetchEmployeeDetails} // Fetch employee details when field loses focus
-          required
-        />
-      </div>
-
-      {/* Employee Name Field */}
       <div className={styles.formGroup}>
         <label className={styles.formLabel}>Employee Name:</label>
         <input
@@ -85,7 +69,6 @@ const ApplyLeave = () => {
         />
       </div>
 
-      {/* Leave Application Form */}
       <form onSubmit={handleSubmit}>
         <div className={styles.formGroup}>
           <label className={styles.formLabel}>Type of Leave:</label>

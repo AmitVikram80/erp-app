@@ -20,13 +20,12 @@ const ApplyCompensatoryLeave = () => {
       compensatoryReason,
       startDate,
       endDate,
-      empId,
     };
 
     try {
-      axiosInstance.post("/addCompensatoryLeave", newCompensatoryLeave);
+      axiosInstance.post("user/addCompensatoryLeave", newCompensatoryLeave);
       setMessage("Compensatory Leave applied successfully!");
-      setTimeout(() => navigate(`/compensatory-leave`), 2000); // Redirect to compensatory leave page
+      setTimeout(() => navigate(`/user-dashboard/compensatory-leave`), 2000); // Redirect to compensatory leave page
     } catch (error) {
       console.error("Error applying compensatory leave", error);
       setMessage("Error applying compensatory leave.");
@@ -86,19 +85,6 @@ const ApplyCompensatoryLeave = () => {
             id="endDate"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
-            required
-          />
-        </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="empId" className={styles.formLabel}>
-            Employee ID
-          </label>
-          <input
-            type="number"
-            className={styles.formControl}
-            id="empId"
-            value={empId}
-            onChange={(e) => setEmpId(e.target.value)}
             required
           />
         </div>

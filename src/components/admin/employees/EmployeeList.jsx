@@ -101,7 +101,7 @@ const EmployeeList = () => {
               <td>
                 <button
                   className="btn btn-primary btn-sm"
-                  onClick={() => navigate(`/leave-data/${employee.employeeId}`)}
+                  onClick={() => navigate(`/admin-dashboard/leave-data/${employee.employeeId}`)}
                 >
                   View
                 </button>

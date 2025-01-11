@@ -26,7 +26,7 @@ const AddEmployee = () => {
     axiosInstance.post('/employee/', form)
       .then(() => {
         alert('Employee added successfully');
-        navigate('/employees'); 
+        navigate('/admin-dashboard/employees'); 
       })
       .catch((error) => console.error(error));
   };

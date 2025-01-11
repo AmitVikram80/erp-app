@@ -53,9 +53,6 @@ const AdminHeader = () => {
                                     Leave
                                 </a>
                                 <ul className="dropdown-menu" aria-labelledby="leaveDropdown">
-                                    <li><Link className="dropdown-item" to="/admin-dashboard/apply-leave">Apply Leave</Link></li>
-                                    <li><Link className="dropdown-item" to="/admin-dashboard/apply-compensatory-leave">Apply Compensatory Leave</Link></li>
-                                    <li><Link className="dropdown-item" to="/admin-dashboard/compensatory-leave">Compensatory Leave</Link></li>
                                     <li><Link className="dropdown-item" to="/admin-dashboard/sanctioned-leaves">Sanctioned Leaves</Link></li>
                                     <li><Link className="dropdown-item" to="/admin-dashboard/admin-leave-data">Admin Leave Data</Link></li>
                                 </ul>
