@@ -9,7 +9,7 @@ const SanctionLeave = () => {
   // Fetch sanction leave data
   const fetchSanctionLeaves = async () => {
     try {
-      const response = await axiosInstance.get(`/getAllSanctionedLeaves`);
+      const response = await axiosInstance.get(`/admin/getAllSanctionedLeaves`);
       setSanctionLeaves(response.data || []); // Ensure it's an array
       setLoading(false);
     } catch (error) {

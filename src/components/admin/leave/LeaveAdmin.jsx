@@ -30,7 +30,7 @@ const LeaveManager = () => {
   // Fetch compensatory leave data
   const fetchCompensatoryLeaves = async () => {
     try {
-      const response = await axiosInstance.get(`/getAllCompensatoryLeave`);
+      const response = await axiosInstance.get(`/admin/getAllCompensatoryLeave`);
       const compensatoryLeavesWithSavedStatus = response.data.map((leave) => {
         const savedStatus = localStorage.getItem(`compensatoryLeaveStatus-${leave.compensatoryLeaveId}`);
         return {
@@ -53,7 +53,7 @@ const LeaveManager = () => {
         ...(type === "LEAVE" ? { leaveRequestId: leaveId } : { compensatoryLeaveId: leaveId }),
       };
 
-      await axiosInstance.post(`admin/addSanctionLeave`, sanctionData);
+      await axiosInstance.post(`/admin/addSanctionLeave`, sanctionData);
       setMessage(`Leave application ${leaveId} has been ${status.toLowerCase()}`);
 
       localStorage.setItem(

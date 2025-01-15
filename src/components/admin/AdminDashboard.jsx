@@ -20,6 +20,15 @@ import EmployeeMedicalData from './medical/EmployeeMedicalData';
 import LeaveApplication from './leave/LeaveApplication';
 import SanctionLeave from './leave/SanctionLeave';
 import LeaveAdmin from './leave/LeaveAdmin';
+import JoiningPage from './joining-leaving/JoiningPage';
+import DisplayJoinings from './joining-leaving/DisplayJoinings';
+import RelievingPage from './joining-leaving/RelievingPage';
+import DisplayRelievings from './joining-leaving/DisplayRelievings';
+import PrintJoiningPage from './joining-leaving/PrintJoiningPage';
+import DisplayPrintJoinings from './joining-leaving/DisplayPrintJoinings';
+import PrintRelievingPage from './joining-leaving/PrintRelievingPage';
+import DisplayPrintRelievings from './joining-leaving/DisplayPrintRelievings';
+
 
 
 const AdminDashboard = () => {
@@ -46,6 +55,18 @@ const AdminDashboard = () => {
           <Route path="leave-data/:empId" element={<PrivateRoute> <LeaveApplication /> </PrivateRoute>} />
           <Route path="sanctioned-leaves" element={<PrivateRoute> <SanctionLeave /> </PrivateRoute>} />
           <Route path="admin-leave-data" element={<PrivateRoute> <LeaveAdmin /> </PrivateRoute>} />
+          <Route path='add-joining' element={<PrivateRoute> <JoiningPage /></PrivateRoute>} />
+          <Route path='editjoining/:id' element={<PrivateRoute> <JoiningPage /></PrivateRoute>} />
+          <Route path='joining-list' element={<PrivateRoute> <DisplayJoinings /></PrivateRoute>} />
+          <Route path='add-relieving' element={<PrivateRoute> <RelievingPage /></PrivateRoute>} />
+          <Route path='editrelieving/:id' element={<PrivateRoute> <RelievingPage /></PrivateRoute>} />
+          <Route path='relieving-list' element={<PrivateRoute> <DisplayRelievings /></PrivateRoute>} />
+          <Route path='add-printjoining' element={<PrivateRoute> <PrintJoiningPage /></PrivateRoute>} />
+          <Route path='editprintjoining/:id' element={<PrivateRoute> <PrintJoiningPage /></PrivateRoute>} />
+          <Route path='printjoining-list' element={<PrivateRoute> <DisplayPrintJoinings /></PrivateRoute>} />
+          <Route path='add-printrelieving' element={<PrivateRoute> <PrintRelievingPage /></PrivateRoute>} />
+          <Route path='editprintrelieving/:id' element={<PrivateRoute> <PrintRelievingPage /></PrivateRoute>} />
+          <Route path='printrelieving-list' element={<PrivateRoute> <DisplayPrintRelievings /></PrivateRoute>} />
         </Routes>
       </main>
     </div>

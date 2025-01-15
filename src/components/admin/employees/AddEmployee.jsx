@@ -23,7 +23,7 @@ const AddEmployee = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axiosInstance.post('/employee/', form)
+    axiosInstance.post('/admin/employee/', form)
       .then(() => {
         alert('Employee added successfully');
         navigate('/admin-dashboard/employees'); 

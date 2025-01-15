@@ -30,7 +30,7 @@ const MedicalApprovalForm = () => {
       setDependantName(dependantData.dependantName+" "+'( '+dependantData.relationship+' )');
       const employeeId = dependantData.employeeId;
 
-      const employeeResponse = await axiosInstance.get(`/employee/${employeeId}`);
+      const employeeResponse = await axiosInstance.get(`/admin/employee/${employeeId}`);
       const employeeData = employeeResponse.data;
   
       setEmployeeName(employeeData.firstName+" "+employeeData.lastName);

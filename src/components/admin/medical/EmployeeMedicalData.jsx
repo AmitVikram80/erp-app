@@ -12,7 +12,7 @@ const EmployeeMedicalData = () => {
     useEffect(() => {
         const fetchAllData = async () => {
             try {
-                const employeeResponse = await axiosInstance.get(`/employee/${empId}`);
+                const employeeResponse = await axiosInstance.get(`/admin/employee/${empId}`);
                 setEmployeeDetails(employeeResponse.data);
 
                 const dependantsResponse = await axiosInstance.get(`/dependant/employee/${empId}`);

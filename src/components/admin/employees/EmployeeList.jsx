@@ -5,44 +5,31 @@ import { useNavigate } from 'react-router-dom';
 const EmployeeList = () => {
   const [employees, setEmployees] = useState([]);
   const [searchId, setSearchId] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchEmployees = async () => {
-      try {
-        const response = await axiosInstance.get('/employee/all');
-        setEmployees(response.data);
-      } catch (error) {
-        console.error('Error fetching employees:', error);
-      }
-    };
-
     fetchEmployees();
   }, []);
 
-  const fetchAllEmployees = () => {
-    axiosInstance.get('/employee/all')
-      .then(response => {
-        setEmployees(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching employees:', error);
-      });
+  const fetchEmployees = async (id = '') => {
+    setLoading(true);
+    setError('');
+    try {
+      const endpoint = id ? `/admin/employee/${id}` : '/admin/employee/all';
+      const response = await axiosInstance.get(endpoint);
+      setEmployees(id ? [response.data] : response.data);
+    } catch (error) {
+      console.error('Error fetching employees:', error);
+      setError('Failed to fetch employees. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSearch = () => {
-    if (searchId.trim() === '') {
-      fetchAllEmployees();
-    } else {
-      axiosInstance.get(`/employee/${searchId}`)
-        .then(response => {
-          setEmployees([response.data]);
-        })
-        .catch(error => {
-          console.error('Error fetching employee:', error);
-          alert('Failed to fetch employee. Please check the ID and try again.');
-        });
-    }
+    fetchEmployees(searchId.trim());
   };
 
   return (
@@ -59,9 +46,12 @@ const EmployeeList = () => {
           />
         </div>
         <div className="col-md-4">
-          <button className="btn btn-primary" onClick={handleSearch}>Search</button>
+          <button className="btn btn-primary" onClick={handleSearch} disabled={loading}>
+            {loading ? 'Searching...' : 'Search'}
+          </button>
         </div>
       </div>
+      {error && <div className="alert alert-danger">{error}</div>}
       <table className="table table-striped table-bordered table-hover">
         <thead className='table-success'>
           <tr>
@@ -75,7 +65,6 @@ const EmployeeList = () => {
             <th>Date of Joining</th>
             <th>Designation</th>
             <th>Medical Data</th>
-            <th>Leave Data</th>
           </tr>
         </thead>
         <tbody>
@@ -94,14 +83,6 @@ const EmployeeList = () => {
                 <button
                   className="btn btn-primary btn-sm"
                   onClick={() => navigate(`/admin-dashboard/emp-medical-data/${employee.employeeId}`)}
-                >
-                  View
-                </button>
-              </td>
-              <td>
-                <button
-                  className="btn btn-primary btn-sm"
-                  onClick={() => navigate(`/admin-dashboard/leave-data/${employee.employeeId}`)}
                 >
                   View
                 </button>

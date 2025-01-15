@@ -11,7 +11,7 @@ const UpdateEmployee = () => {
 
   const handleIdSubmit = (e) => {
     e.preventDefault();
-    axiosInstance.get(`/employee/${employeeId}`)
+    axiosInstance.get(`/admin/employee/${employeeId}`)
       .then(response => {
         setEmployee(response.data);
         setError('');
@@ -29,7 +29,7 @@ const UpdateEmployee = () => {
 
   const handleUpdateSubmit = (e) => {
     e.preventDefault();
-    axiosInstance.put(`/employee/${employeeId}`, employee)
+    axiosInstance.put(`/admin/employee/${employeeId}`, employee)
       .then(response => {
         alert('Employee updated successfully');
         navigate('/employees'); 

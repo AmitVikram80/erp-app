@@ -11,7 +11,7 @@ const DeleteEmployee = () => {
 
   const handleIdSubmit = (e) => {
     e.preventDefault();
-    axiosInstance.get(`/employee/${employeeId}`)
+    axiosInstance.get(`/admin/employee/${employeeId}`)
       .then(response => {
         setEmployee(response.data);
         setError('');
@@ -25,7 +25,7 @@ const DeleteEmployee = () => {
   const handleDelete = () => {
     const confirmDelete = window.confirm('Are you sure you want to delete this employee?');
     if (confirmDelete) {
-      axiosInstance.delete(`/employee/${employeeId}`)
+      axiosInstance.delete(`/admin/employee/${employeeId}`)
         .then(response => {
           alert('Employee deleted successfully');
           navigate('/employees'); // Redirect to Employee List page

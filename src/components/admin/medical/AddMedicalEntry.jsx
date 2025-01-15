@@ -23,7 +23,7 @@ const AddMedicalEntry = () => {
 
         try {
             setLoading(true);
-            const { data: employeeData } = await axiosInstance.get(`/employee/${employeeId}`);
+            const { data: employeeData } = await axiosInstance.get(`/admin/employee/${employeeId}`);
             setEmployeeDetails({
                 name: `${employeeData?.firstName || "Unknown"} ${employeeData?.lastName || "Employee"}`,
                 email: employeeData?.email || "N/A",
@@ -74,7 +74,7 @@ const AddMedicalEntry = () => {
             });
             if (response.status === 200) {
                 alert("Medical entry processed successfully");
-                navigate(`/medical-entry-list`);
+                navigate(`/admin-dashboard/medical-entry-list`);
             }
         } catch (error) {
             console.error("Error processing medical entry:", error);

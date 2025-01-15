@@ -10,7 +10,7 @@ const CompensatoryLeave = () => {
   useEffect(() => {
     const fetchCompensatoryLeaves = async () => {
       try {
-        const response = await axiosInstance.get(`/getAllCompensatoryLeave`);
+        const response = await axiosInstance.get(`user/getAllCompensatoryLeave`);
         const leavesWithEmployeeDetails = await Promise.all(
           response.data.map(async (leave) => {
             const empResponse = await axiosInstance.get(
@@ -65,7 +65,7 @@ const CompensatoryLeave = () => {
 
   // Navigate to ApplyCompensatoryLeave component
   const handleApplyLeave = () => {
-    navigate("/apply-compensatory-leave");
+    navigate("/user-dashboard/apply-compensatory-leave");
   };
 
   return (

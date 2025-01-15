@@ -22,7 +22,7 @@ const AddDependant = () => {
         try {
             await axiosInstance.post('/dependant', form);
             alert('Dependant added successfully.');
-            navigate(`/`);
+            navigate(`/admin-dashboard/medical-entry-list`);
         } catch (error) {
             console.error(error);
             alert('Failed to add dependant.');
