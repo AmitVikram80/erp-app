@@ -10,11 +10,13 @@ const CompensatoryLeave = () => {
   useEffect(() => {
     const fetchCompensatoryLeaves = async () => {
       try {
-        const response = await axiosInstance.get(`user/getAllCompensatoryLeave`);
+        const response = await axiosInstance.get(
+          `user/getAllCompensatoryLeave`
+        );
         const leavesWithEmployeeDetails = await Promise.all(
           response.data.map(async (leave) => {
             const empResponse = await axiosInstance.get(
-              `/employee/${leave.empId}`
+              `user/employee/profile`
             );
             return {
               ...leave,
@@ -82,9 +84,10 @@ const CompensatoryLeave = () => {
             <th>Reason</th>
             <th>Start Date</th>
             <th>End Date</th>
-            <th>Employee ID</th>
-            <th>Employee Name</th>
-            <th>Employee Designation</th>
+            <th>Emp ID</th>
+            <th>Emp Name</th>
+            <th>Emp Desg</th>
+            <th>status</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -100,12 +103,33 @@ const CompensatoryLeave = () => {
               <td>{leave.empName}</td>
               <td>{leave.empDesignation}</td>
               <td>
-                <button
-                  className="btn btn-warning btn-sm me-2"
-                  onClick={() => handleModify(leave)}
-                >
-                  Modify
-                </button>
+                {leave.status === "APPROVED" ? (
+                  <span className="text-success">Approved</span>
+                ) : leave.status === "REJECTED" ? (
+                  <span className="text-danger">Rejected</span>
+                ) : (
+                  <span className="text-warning">Pending</span>
+                )}
+              </td>
+              <td>
+                {leave.status === null ? (
+                  <>
+                    <button
+                      className="btn btn-danger btn-sm mx-2"
+                      onClick={() => handleDelete(leave.leaveRequestId)}
+                    >
+                      Delete
+                    </button>
+                    <button
+                      className="btn btn-warning btn-sm"
+                      onClick={() => handleModify(leave)}
+                    >
+                      Modify
+                    </button>
+                  </>
+                ) : (
+                  <span>-</span>
+                )}
               </td>
             </tr>
           ))}

@@ -2,88 +2,126 @@ import React, { useState, useEffect } from "react";
 import styles from "../../../css/Admin.module.css";
 import axiosInstance from "../../../api/axiosInstance";
 
-const LeaveManager = () => {
+const LeaveAdmin = () => {
   const [leaveApplications, setLeaveApplications] = useState([]);
-  const [compensatoryLeaves, setCompensatoryLeaves] = useState([]);
+  const [compensatoryLeave, setCompensatoryLeave] = useState([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
   const [error, setError] = useState(null);
 
-  // Fetch leave application data
+  // Fetch leave applications
   const fetchLeaveApplications = async () => {
     try {
       const response = await axiosInstance.get(`/getAllLeaves`);
-      const leavesWithSavedStatus = response.data.map((leave) => {
-        const savedStatus = localStorage.getItem(`leaveStatus-${leave.leaveRequestId}`);
-        return {
-          ...leave,
-          applicationStatus: savedStatus || leave.applicationStatus,
-        };
-      });
-      setLeaveApplications(leavesWithSavedStatus);
+      const fetchedLeaves = response.data.map((leave) => ({
+        ...leave,
+      }));
+      setLeaveApplications(fetchedLeaves);
     } catch (error) {
       console.error("Error fetching leave applications:", error);
       setError("Failed to fetch leave applications.");
     }
   };
 
-  // Fetch compensatory leave data
-  const fetchCompensatoryLeaves = async () => {
+  // Fetch compensatory leave applications
+  const fetchCompensatoryLeaveApplication = async () => {
     try {
-      const response = await axiosInstance.get(`/admin/getAllCompensatoryLeave`);
-      const compensatoryLeavesWithSavedStatus = response.data.map((leave) => {
-        const savedStatus = localStorage.getItem(`compensatoryLeaveStatus-${leave.compensatoryLeaveId}`);
-        return {
-          ...leave,
-          applicationStatus: savedStatus || leave.applicationStatus,
-        };
-      });
-      setCompensatoryLeaves(compensatoryLeavesWithSavedStatus);
+      const response = await axiosInstance.get("/user/getAllCompensatoryLeave");
+      const fetchedCompensatoryLeaves = response.data.map(
+        (compensatoryLeave) => ({
+          ...compensatoryLeave,
+        })
+      );
+      setCompensatoryLeave(fetchedCompensatoryLeaves);
     } catch (error) {
-      console.error("Error fetching compensatory leaves:", error);
-      setError("Failed to fetch compensatory leaves.");
+      console.log("Error fetching compensatory leave applications:", error);
+      setError("Failed to fetch compensatory leave applications.");
     }
   };
 
-  // Approve or reject leave
-  const handleAction = async (leaveId, status, type) => {
+  // Approve or Reject leave (for both regular and compensatory leaves)
+  const handleAction = async (
+    leaveId,
+    compensatoryLeaveId,
+    leaveDate,
+    startDate,
+    endDate,
+    reason,
+    typeOfLeave,
+    status,
+    empId
+  ) => {
     try {
+      const leaveDto = {
+        startDate,
+        endDate,
+        reason,
+        typeOfLeave,
+        status,
+        empId,
+      };
+
+      const compensatoryLeaveDto = {
+        leaveDate,
+        reason,
+        startDate,
+        endDate,
+        status,
+        empId,
+      };
+
+      // Determine if it's a regular leave or compensatory leave
+      if (compensatoryLeaveId) {
+        console.log(compensatoryLeaveDto);
+        // Handle compensatory leave
+        await axiosInstance.put(
+          `/updateCompensatoryLeave?id=${compensatoryLeaveId}`,
+          compensatoryLeaveDto
+        );
+      } else {
+        // Handle regular leave
+        await axiosInstance.put(`/updateLeaves?id=${leaveId}`, leaveDto);
+      }
+
       const sanctionData = {
         applicationStatus: status,
-        ...(type === "LEAVE" ? { leaveRequestId: leaveId } : { compensatoryLeaveId: leaveId }),
+        adminId: 2, // Set the admin ID dynamically if needed
+        leaveRequestId: compensatoryLeaveId ? null : leaveId, // Use either leaveRequestId or
+        compensatoryLeaveId: leaveId ? null : compensatoryLeaveId,
       };
 
       await axiosInstance.post(`/admin/addSanctionLeave`, sanctionData);
-      setMessage(`Leave application ${leaveId} has been ${status.toLowerCase()}`);
 
-      localStorage.setItem(
-        `${type === "LEAVE" ? "leaveStatus" : "compensatoryLeaveStatus"}-${leaveId}`,
-        status
+      // Update the leave status in state
+      setLeaveApplications((prevState) =>
+        prevState.map((leave) =>
+          leave.leaveRequestId === leaveId ? { ...leave, status } : leave
+        )
       );
 
-      if (type === "LEAVE") {
-        setLeaveApplications((prevState) =>
-          prevState.map((leave) =>
-            leave.leaveRequestId === leaveId ? { ...leave, applicationStatus: status } : leave
-          )
-        );
-      } else {
-        setCompensatoryLeaves((prevState) =>
-          prevState.map((leave) =>
-            leave.compensatoryLeaveId === leaveId ? { ...leave, applicationStatus: status } : leave
-          )
-        );
-      }
+      setCompensatoryLeave((prevState) =>
+        prevState.map((compLeave) =>
+          compLeave.compensatoryLeaveId === compensatoryLeaveId
+            ? { ...compLeave, status }
+            : compLeave
+        )
+      );
+
+      setMessage(`Leave application has been ${status.toLowerCase()}.`);
     } catch (error) {
-      console.error(`Error ${status.toLowerCase()}ing ${type} leave application ${leaveId}:`, error);
+      console.error(
+        `Error ${status.toLowerCase()}ing leave application:`,
+        error
+      );
       setMessage(`Error ${status.toLowerCase()}ing the leave application.`);
     }
   };
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       await fetchLeaveApplications();
-      await fetchCompensatoryLeaves();
+      await fetchCompensatoryLeaveApplication();
       setLoading(false);
     };
     fetchData();
@@ -101,16 +139,19 @@ const LeaveManager = () => {
     <div className={styles.managerContainer}>
       <h1>Leave Applications</h1>
       {message && <div className={styles.message}>{message}</div>}
+
+      {/* Regular Leave Applications Table */}
       {leaveApplications.length > 0 ? (
-        <table className="table table-bordered table-hover">
+        <table className="table table-bordered table-hover mb-5">
           <thead className={styles.tableHeader}>
             <tr>
               <th>Leave ID</th>
-              <th>Employee Id</th>
+              <th>Employee ID</th>
               <th>Leave Type</th>
               <th>Start Date</th>
               <th>End Date</th>
               <th>Reason</th>
+              <th>Status</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -123,24 +164,57 @@ const LeaveManager = () => {
                 <td>{leave.startDate}</td>
                 <td>{leave.endDate}</td>
                 <td>{leave.reason}</td>
-                <td className={styles.tableActions}>
-                  {leave.applicationStatus === "APPROVED" || leave.applicationStatus === "REJECTED" ? (
-                    <span>{leave.applicationStatus}</span>
+                <td>
+                  {leave.status === "APPROVED" ? (
+                    <span className={styles.approvedText}>Approved</span>
+                  ) : leave.status === "REJECTED" ? (
+                    <span className={styles.rejectedText}>Rejected</span>
                   ) : (
+                    <span className={styles.pendingText}>Pending</span>
+                  )}
+                </td>
+                <td>
+                  {leave.status === null ? (
                     <>
                       <button
-                        className={`${styles.btnApprove} btn-sm`}
-                        onClick={() => handleAction(leave.leaveRequestId, "APPROVED", "LEAVE")}
+                        className="btn btn-success btn-sm mx-2"
+                        onClick={() =>
+                          handleAction(
+                            leave.leaveRequestId,
+                            null,
+                            null,
+                            leave.startDate,
+                            leave.endDate,
+                            leave.reason,
+                            leave.typeOfLeave,
+                            "APPROVED",
+                            leave.empId
+                          )
+                        }
                       >
                         Approve
                       </button>
                       <button
-                        className={`${styles.btnReject} btn-sm`}
-                        onClick={() => handleAction(leave.leaveRequestId, "REJECTED", "LEAVE")}
+                        className="btn btn-danger btn-sm"
+                        onClick={() =>
+                          handleAction(
+                            leave.leaveRequestId,
+                            null,
+                            null,
+                            leave.startDate,
+                            leave.endDate,
+                            leave.reason,
+                            leave.typeOfLeave,
+                            "REJECTED",
+                            leave.empId
+                          )
+                        }
                       >
                         Reject
                       </button>
                     </>
+                  ) : (
+                    <span>-</span>
                   )}
                 </td>
               </tr>
@@ -151,45 +225,84 @@ const LeaveManager = () => {
         <p>No leave applications found.</p>
       )}
 
-      <h1 className="mt-5">Compensatory Leaves</h1>
-      {compensatoryLeaves.length > 0 ? (
-        <table className="table table-bordered table-hover">
+      {/* Compensatory Leave Applications Table */}
+
+      <h2 style={{ textAlign: "center" }}>Compensatory Leave</h2>
+
+      {compensatoryLeave.length > 0 ? (
+        <table className="table table-bordered table-hover mb-5">
           <thead className={styles.tableHeader}>
             <tr>
               <th>Compensatory Leave ID</th>
-              <th>Leave Date</th>
-              <th>Reason</th>
+              <th>Employee ID</th>
+              <th>Leave Type</th>
               <th>Start Date</th>
               <th>End Date</th>
+              <th>Reason</th>
+              <th>Status</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody className={styles.tableBody}>
-            {compensatoryLeaves.map((leave) => (
-              <tr key={leave.compensatoryLeaveId}>
-                <td>{leave.compensatoryLeaveId}</td>
-                <td>{leave.leaveDate}</td>
-                <td>{leave.compensatoryReason}</td>
-                <td>{leave.startDate}</td>
-                <td>{leave.endDate}</td>
-                <td className={styles.tableActions}>
-                  {leave.applicationStatus === "APPROVED" || leave.applicationStatus === "REJECTED" ? (
-                    <span>{leave.applicationStatus}</span>
+            {compensatoryLeave.map((compLeave) => (
+              <tr key={compLeave.compensatoryLeaveId}>
+                <td>{compLeave.compensatoryLeaveId}</td>
+                <td>{compLeave.empId}</td>
+                <td>{"compensatory"}</td>
+                <td>{compLeave.startDate}</td>
+                <td>{compLeave.endDate}</td>
+                <td>{compLeave.compensatoryReason}</td>
+                <td>
+                  {compLeave.status === "APPROVED" ? (
+                    <span className={styles.approvedText}>Approved</span>
+                  ) : compLeave.status === "REJECTED" ? (
+                    <span className={styles.rejectedText}>Rejected</span>
                   ) : (
+                    <span className={styles.pendingText}>Pending</span>
+                  )}
+                </td>
+                <td>
+                  {compLeave.status === null ? (
                     <>
                       <button
-                        className={`${styles.btnApprove} btn-sm`}
-                        onClick={() => handleAction(leave.compensatoryLeaveId, "APPROVED", "COMPENSATORY")}
+                        className="btn btn-success btn-sm mx-2"
+                        onClick={() =>
+                          handleAction(
+                            null,
+                            compLeave.compensatoryLeaveId,
+                            compLeave.leaveDate,
+                            compLeave.startDate,
+                            compLeave.endDate,
+                            compLeave.compensatoryReason,
+                            compLeave.typeOfLeave,
+                            "APPROVED",
+                            compLeave.empId
+                          )
+                        }
                       >
                         Approve
                       </button>
                       <button
-                        className={`${styles.btnReject} btn-sm`}
-                        onClick={() => handleAction(leave.compensatoryLeaveId, "REJECTED", "COMPENSATORY")}
+                        className="btn btn-danger btn-sm"
+                        onClick={() =>
+                          handleAction(
+                            null,
+                            compLeave.compensatoryLeaveId,
+                            compLeave.leaveDate,
+                            compLeave.startDate,
+                            compLeave.endDate,
+                            compLeave.compensatoryReason,
+                            compLeave.typeOfLeave,
+                            "REJECTED",
+                            compLeave.empId
+                          )
+                        }
                       >
                         Reject
                       </button>
                     </>
+                  ) : (
+                    <span>-</span>
                   )}
                 </td>
               </tr>
@@ -197,10 +310,10 @@ const LeaveManager = () => {
           </tbody>
         </table>
       ) : (
-        <p>No compensatory leaves found.</p>
+        <p>No compensatory leave applications found.</p>
       )}
     </div>
   );
 };
 
-export default LeaveManager;
+export default LeaveAdmin;

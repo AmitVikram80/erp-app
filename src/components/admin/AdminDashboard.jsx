@@ -28,7 +28,8 @@ import PrintJoiningPage from './joining-leaving/PrintJoiningPage';
 import DisplayPrintJoinings from './joining-leaving/DisplayPrintJoinings';
 import PrintRelievingPage from './joining-leaving/PrintRelievingPage';
 import DisplayPrintRelievings from './joining-leaving/DisplayPrintRelievings';
-
+import ListAttendanceComponent from './attendance/ListAttendanceComponent'
+import ListBiometricComponent from './attendance/ListBiometricComponent'
 
 
 const AdminDashboard = () => {
@@ -67,6 +68,9 @@ const AdminDashboard = () => {
           <Route path='add-printrelieving' element={<PrivateRoute> <PrintRelievingPage /></PrivateRoute>} />
           <Route path='editprintrelieving/:id' element={<PrivateRoute> <PrintRelievingPage /></PrivateRoute>} />
           <Route path='printrelieving-list' element={<PrivateRoute> <DisplayPrintRelievings /></PrivateRoute>} />
+
+          <Route path='attendance-data' element={<PrivateRoute> <ListAttendanceComponent /></PrivateRoute>} />
+          <Route path='bioattendance-data' element={<PrivateRoute> <ListBiometricComponent /></PrivateRoute>} />
         </Routes>
       </main>
     </div>

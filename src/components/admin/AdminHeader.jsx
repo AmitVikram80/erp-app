@@ -73,6 +73,16 @@ const AdminHeader = () => {
                                     
                                 </ul>
                             </li>
+
+                            <li className="nav-item dropdown">
+                                <a className="nav-link dropdown-toggle" href="#" id="joiningDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Attendance
+                                </a>
+                                <ul className="dropdown-menu" aria-labelledby="joiningDropdown">
+                                    <li><Link className="dropdown-item" to="/admin-dashboard/attendance-data">Attendance Data</Link></li>
+                                    <li><Link className="dropdown-item" to="/admin-dashboard/bioattendance-data">Biometric Attendance Data</Link></li>
+                                </ul>
+                            </li>
                         </ul>
 
                         <ul className="navbar-nav ms-auto">

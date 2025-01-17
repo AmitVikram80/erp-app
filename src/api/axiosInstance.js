@@ -23,7 +23,6 @@ axiosInstance.interceptors.response.use(
   (error) => {
     if (error.response && error.response.status === 403) {
       console.error('Token expired or invalid:', error.response.data);
-      localStorage.removeItem('token'); 
       window.location.href = '/login'; 
     }
     return Promise.reject(error);

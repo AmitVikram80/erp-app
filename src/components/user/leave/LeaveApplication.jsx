@@ -27,7 +27,10 @@ const LeaveApplication = () => {
   const fetchLeaves = async () => {
     try {
       const response = await axiosInstance.get(`/user/getLeaves`);
-      setLeaves(response.data);
+      const fetchedLeaves = response.data.map((leave) => ({
+        ...leave,
+      }));
+      setLeaves(fetchedLeaves);
     } catch (error) {
       console.error("Error fetching leaves", error);
       setError("Failed to fetch leave data.");
@@ -39,7 +42,7 @@ const LeaveApplication = () => {
     try {
       await axiosInstance.delete(`deleteLeaveById?id=${leaveId}`);
       alert("Leave deleted successfully!");
-      fetchLeaves();
+      fetchLeaves(); // Refresh the leaves after deletion
     } catch (error) {
       console.error("Error deleting leave", error);
       alert("Failed to delete leave.");
@@ -103,6 +106,7 @@ const LeaveApplication = () => {
                 <th>Start Date</th>
                 <th>End Date</th>
                 <th>Reason</th>
+                <th>Status</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -115,12 +119,33 @@ const LeaveApplication = () => {
                   <td>{leave.endDate}</td>
                   <td>{leave.reason}</td>
                   <td>
-                    <button
-                      className="btn btn-warning btn-sm"
-                      onClick={() => handleModify(leave)}
-                    >
-                      Modify
-                    </button>
+                    {leave.status === "APPROVED" ? (
+                      <span className="text-success">Approved</span>
+                    ) : leave.status === "REJECTED" ? (
+                      <span className="text-danger">Rejected</span>
+                    ) : (
+                      <span className="text-warning">Pending</span>
+                    )}
+                  </td>
+                  <td>
+                    {leave.status === null ? (
+                      <>
+                        <button
+                          className="btn btn-danger btn-sm mx-2"
+                          onClick={() => handleDelete(leave.leaveRequestId)}
+                        >
+                          Delete
+                        </button>
+                        <button
+                          className="btn btn-warning btn-sm"
+                          onClick={() => handleModify(leave)}
+                        >
+                          Modify
+                        </button>
+                      </>
+                    ) : (
+                      <span>-</span>
+                    )}
                   </td>
                 </tr>
               ))}

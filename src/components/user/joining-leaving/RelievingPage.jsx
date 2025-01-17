@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
 import axiosInstance from "../../../api/axiosInstance";
 
 const RelievingPage = () => {
@@ -30,7 +29,7 @@ const RelievingPage = () => {
 
     if (empId) {
       axiosInstance
-        .get(`/admin/getJoiningReportByEmpId/${empId}`)
+        .get(`/user/getJoiningReport`)
         .then((response) => {
           const joiningReport = response.data[0];
           if (joiningReport) {
@@ -196,7 +195,7 @@ const RelievingPage = () => {
   return (
     <div>
       <div className="container-fluid">
-        <br/>
+        <br />
         <div className="row justify-content-evenly">
           {changeHeading()}
           <div className="card col-md-6 mt-4">

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../api/axiosInstance';
 
@@ -8,6 +8,10 @@ const Login = () => {
   const [role, setRole] = useState('admin'); 
   const [error, setError] = useState('');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    localStorage.removeItem('token');
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -22,8 +26,16 @@ const Login = () => {
         navigate('/user-dashboard/');
       }
     } catch (error) {
-      console.error('Error logging in:', error);
-      setError('Invalid username or password');
+      if (error.response) {
+        console.error('Error response from server:', error.response.data);
+        setError('Invalid username or password');
+      } else if (error.request) {
+        console.error('No response received:', error.request);
+        setError('Network error: Please check your connection and try again.');
+      } else {
+        console.error('Error during request setup:', error.message);
+        setError('Unexpected error occurred: ' + error.message);
+      }
     }
   };
 
