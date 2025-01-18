@@ -20,16 +20,14 @@ import EmployeeMedicalData from './medical/EmployeeMedicalData';
 import LeaveApplication from './leave/LeaveApplication';
 import SanctionLeave from './leave/SanctionLeave';
 import LeaveAdmin from './leave/LeaveAdmin';
-import JoiningPage from './joining-leaving/JoiningPage';
-import DisplayJoinings from './joining-leaving/DisplayJoinings';
-import RelievingPage from './joining-leaving/RelievingPage';
-import DisplayRelievings from './joining-leaving/DisplayRelievings';
-import PrintJoiningPage from './joining-leaving/PrintJoiningPage';
-import DisplayPrintJoinings from './joining-leaving/DisplayPrintJoinings';
-import PrintRelievingPage from './joining-leaving/PrintRelievingPage';
-import DisplayPrintRelievings from './joining-leaving/DisplayPrintRelievings';
-import ListAttendanceComponent from './attendance/ListAttendanceComponent'
-import ListBiometricComponent from './attendance/ListBiometricComponent'
+import JoiningPage from './joining/JoiningPage';
+import DisplayJoinings from './joining/DisplayJoinings';
+import RelievingPage from './relieving/RelievingPage';
+import DisplayRelievings from './relieving/DisplayRelievings';
+import PrintJoiningPage from './joining/PrintJoiningPage';
+import DisplayPrintJoinings from './joining/DisplayPrintJoinings';
+import PrintRelievingPage from './relieving/PrintRelievingPage';
+import DisplayPrintRelievings from './relieving/DisplayPrintRelievings';
 
 
 const AdminDashboard = () => {
@@ -56,7 +54,6 @@ const AdminDashboard = () => {
           <Route path="leave-data/:empId" element={<PrivateRoute> <LeaveApplication /> </PrivateRoute>} />
           <Route path="sanctioned-leaves" element={<PrivateRoute> <SanctionLeave /> </PrivateRoute>} />
           <Route path="admin-leave-data" element={<PrivateRoute> <LeaveAdmin /> </PrivateRoute>} />
-          
           <Route path='add-joining' element={<PrivateRoute> <JoiningPage /></PrivateRoute>} />
           <Route path='editjoining/:id' element={<PrivateRoute> <JoiningPage /></PrivateRoute>} />
           <Route path='joining-list' element={<PrivateRoute> <DisplayJoinings /></PrivateRoute>} />
@@ -69,9 +66,6 @@ const AdminDashboard = () => {
           <Route path='add-printrelieving' element={<PrivateRoute> <PrintRelievingPage /></PrivateRoute>} />
           <Route path='editprintrelieving/:id' element={<PrivateRoute> <PrintRelievingPage /></PrivateRoute>} />
           <Route path='printrelieving-list' element={<PrivateRoute> <DisplayPrintRelievings /></PrivateRoute>} />
-
-          <Route path='attendance-data' element={<PrivateRoute> <ListAttendanceComponent /></PrivateRoute>} />
-          <Route path='bioattendance-data' element={<PrivateRoute> <ListBiometricComponent /></PrivateRoute>} />
         </Routes>
       </main>
     </div>
