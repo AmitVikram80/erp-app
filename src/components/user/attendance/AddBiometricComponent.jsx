@@ -81,7 +81,7 @@ const AddBiometricComponent = () => {
       if (id) {
         await axiosInstance.put(`/modBioAttendance/${id}`, biometricAttendance);
       } else {
-        await axiosInstance.post(`/bioattendance`, biometricAttendance);
+        await axiosInstance.post(`/user/bioattendance`, biometricAttendance);
       }
       alert(`Biometric attendance ${id ? 'updated' : 'added'} successfully.`);
       navigate('/user-dashboard/bioattendances');

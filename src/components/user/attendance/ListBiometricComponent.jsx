@@ -19,7 +19,7 @@ const ListBiometricComponent = () => {
       setEmployeeDetails(employee);
 
       // Fetch all biometric attendance records
-      const attendanceResponse = await axiosInstance.get("/bioattendances");
+      const attendanceResponse = await axiosInstance.get("/user/bioattendances");
       const allBioAttendances = attendanceResponse.data;
 
       // Filter biometric attendances based on the logged-in employee's ID
