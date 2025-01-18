@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import useLogout from '../useLogout';
+import axiosInstance from '../../api/axiosInstance';
 
 const AdminHeader = () => {
     const logout = useLogout();
+    const [employee, setEmployee] = useState(null);
+
+    useEffect(() => {
+        axiosInstance.get('/user/employee/profile')
+            .then(({ data }) => setEmployee(data))
+            .catch(error => console.error('Error fetching logged-in employee:', error));
+    }, []);
 
     return (
         <div>
@@ -65,7 +73,7 @@ const AdminHeader = () => {
                                     <li><Link className="dropdown-item" to="/admin-dashboard/add-joining">Add Joinings</Link></li>
                                     <li><Link className="dropdown-item" to="/admin-dashboard/joining-list">Joining List</Link></li>
                                     <li><Link className="dropdown-item" to="/admin-dashboard/add-printjoining">Add Prints</Link></li>
-                                    <li><Link className="dropdown-item" to="/admin-dashboard/printjoining-list">Printed List</Link></li>                       
+                                    <li><Link className="dropdown-item" to="/admin-dashboard/printjoining-list">Printed List</Link></li>
                                 </ul>
                             </li>
 
@@ -78,7 +86,7 @@ const AdminHeader = () => {
                                     <li><Link className="dropdown-item" to="/admin-dashboard/relieving-list">Relieving List</Link></li>
                                     <li><Link className="dropdown-item" to="/admin-dashboard/add-printrelieving">Print Relievings</Link></li>
                                     <li><Link className="dropdown-item" to="/admin-dashboard/printrelieving-list">Printed List</Link></li>
-                                    
+
                                 </ul>
                             </li>
 
@@ -93,8 +101,15 @@ const AdminHeader = () => {
                             </li>
                         </ul>
 
-                        <ul className="navbar-nav ms-auto">
-                            <li className="nav-item"> <button className="btn btn-link nav-link" onClick={logout}>Logout</button> </li>
+                        <ul className="navbar-nav ms-auto align-items-center">
+                            {employee && (
+                                <li className="nav-item me-3 navbar-text">
+                                    ( {employee.firstName} {employee.lastName} : {employee.employeeId} )
+                                </li>
+                            )}
+                            <li className="nav-item">
+                                <button className="btn btn-link nav-link" onClick={logout}>Logout</button>
+                            </li>
                         </ul>
                     </div>
                 </div>

@@ -31,46 +31,50 @@ import DisplayPrintRelievings from './relieving/DisplayPrintRelievings';
 import ListAttendanceComponent from './attendance/ListAttendanceComponent';
 import ListBiometricComponent from './attendance/ListBiometricComponent';
 
-
 const AdminDashboard = () => {
+  const privateRoutes = [
+    { path: '/', element: <AdminHome /> },
+    { path: 'employees', element: <EmployeeList /> },
+    { path: 'add-employee', element: <AddEmployee /> },
+    { path: 'edit-employee', element: <UpdateEmployee /> },
+    { path: 'delete-employee', element: <DeleteEmployee /> },
+    { path: 'payrolls', element: <PayrollList /> },
+    { path: 'calc-payroll', element: <CalcPayroll /> },
+    { path: 'medical-approvals', element: <MedicalApprovalList /> },
+    { path: 'approve-medical-entry', element: <MedicalApprovalForm /> },
+    { path: 'delete-payroll', element: <DeletePayroll /> },
+    { path: 'add-dependant', element: <AddDependant /> },
+    { path: 'medical-entry-list', element: <MedicalEntryList /> },
+    { path: 'add-medical-entry', element: <AddMedicalEntry /> },
+    { path: 'edit-medical-entry/:medicalEntryId/:dependantId', element: <EditMedicalEntry /> },
+    { path: 'emp-medical-data/:empId', element: <EmployeeMedicalData /> },
+    { path: 'leave-data/:empId', element: <LeaveApplication /> },
+    { path: 'sanctioned-leaves', element: <SanctionLeave /> },
+    { path: 'admin-leave-data', element: <LeaveAdmin /> },
+    { path: 'add-joining', element: <JoiningPage /> },
+    { path: 'editjoining/:id', element: <JoiningPage /> },
+    { path: 'joining-list', element: <DisplayJoinings /> },
+    { path: 'add-relieving', element: <RelievingPage /> },
+    { path: 'editrelieving/:id', element: <RelievingPage /> },
+    { path: 'relieving-list', element: <DisplayRelievings /> },
+    { path: 'add-printjoining', element: <PrintJoiningPage /> },
+    { path: 'editprintjoining/:id', element: <PrintJoiningPage /> },
+    { path: 'printjoining-list', element: <DisplayPrintJoinings /> },
+    { path: 'add-printrelieving', element: <PrintRelievingPage /> },
+    { path: 'editprintrelieving/:id', element: <PrintRelievingPage /> },
+    { path: 'printrelieving-list', element: <DisplayPrintRelievings /> },
+    { path: 'attendance-data', element: <ListAttendanceComponent /> },
+    { path: 'bioattendance-data', element: <ListBiometricComponent /> }
+  ];
+
   return (
     <div>
       <AdminHeader />
       <main>
         <Routes>
-          <Route path='/' element={<AdminHome />} />
-          <Route path='employees' element={<EmployeeList />} />
-          <Route path="add-employee" element={<PrivateRoute><AddEmployee /></PrivateRoute>} />
-          <Route path="edit-employee" element={<PrivateRoute><UpdateEmployee /></PrivateRoute>} />
-          <Route path="delete-employee" element={<PrivateRoute><DeleteEmployee /></PrivateRoute>} />
-          <Route path="payrolls" element={<PrivateRoute><PayrollList /></PrivateRoute>} />
-          <Route path="calc-payroll" element={<PrivateRoute><CalcPayroll /></PrivateRoute>} />
-          <Route path="medical-approvals" element={<PrivateRoute><MedicalApprovalList /></PrivateRoute>} />
-          <Route path="approve-medical-entry" element={<PrivateRoute><MedicalApprovalForm /></PrivateRoute>} />
-          <Route path="delete-payroll" element={<PrivateRoute><DeletePayroll /></PrivateRoute>} />
-          <Route path="add-dependant" element={<PrivateRoute><AddDependant /></PrivateRoute>} />
-          <Route path="medical-entry-list" element={<PrivateRoute><MedicalEntryList /></PrivateRoute>} />
-          <Route path="add-medical-entry" element={<PrivateRoute><AddMedicalEntry /></PrivateRoute>} />
-          <Route path="edit-medical-entry/:medicalEntryId/:dependantId" element={<PrivateRoute><EditMedicalEntry /></PrivateRoute>} />
-          <Route path="emp-medical-data/:empId" element={<PrivateRoute><EmployeeMedicalData /></PrivateRoute>} />
-          <Route path="leave-data/:empId" element={<PrivateRoute> <LeaveApplication /> </PrivateRoute>} />
-          <Route path="sanctioned-leaves" element={<PrivateRoute> <SanctionLeave /> </PrivateRoute>} />
-          <Route path="admin-leave-data" element={<PrivateRoute> <LeaveAdmin /> </PrivateRoute>} />
-          <Route path='add-joining' element={<PrivateRoute> <JoiningPage /></PrivateRoute>} />
-          <Route path='editjoining/:id' element={<PrivateRoute> <JoiningPage /></PrivateRoute>} />
-          <Route path='joining-list' element={<PrivateRoute> <DisplayJoinings /></PrivateRoute>} />
-          <Route path='add-relieving' element={<PrivateRoute> <RelievingPage /></PrivateRoute>} />
-          <Route path='editrelieving/:id' element={<PrivateRoute> <RelievingPage /></PrivateRoute>} />
-          <Route path='relieving-list' element={<PrivateRoute> <DisplayRelievings /></PrivateRoute>} />
-          <Route path='add-printjoining' element={<PrivateRoute> <PrintJoiningPage /></PrivateRoute>} />
-          <Route path='editprintjoining/:id' element={<PrivateRoute> <PrintJoiningPage /></PrivateRoute>} />
-          <Route path='printjoining-list' element={<PrivateRoute> <DisplayPrintJoinings /></PrivateRoute>} />
-          <Route path='add-printrelieving' element={<PrivateRoute> <PrintRelievingPage /></PrivateRoute>} />
-          <Route path='editprintrelieving/:id' element={<PrivateRoute> <PrintRelievingPage /></PrivateRoute>} />
-          <Route path='printrelieving-list' element={<PrivateRoute> <DisplayPrintRelievings /></PrivateRoute>} />
-
-          <Route path='attendance-data' element={<PrivateRoute> <ListAttendanceComponent /> </PrivateRoute>} />
-          <Route path='bioattendance-data' element={<PrivateRoute> <ListBiometricComponent /> </PrivateRoute>} />
+          {privateRoutes.map(({ path, element }) => (
+            <Route key={path} path={path} element={<PrivateRoute>{element}</PrivateRoute>} />
+          ))}
         </Routes>
       </main>
     </div>

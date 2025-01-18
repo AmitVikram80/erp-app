@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import useLogout from '../useLogout';
+import axiosInstance from '../../api/axiosInstance';
 
 const UserHeader = () => {
   const logout = useLogout();
+  const [employee, setEmployee] = useState(null);
+
+  useEffect(() => {
+    axiosInstance.get('/user/employee/profile')
+      .then(({ data }) => setEmployee(data))
+      .catch(error => console.error('Error fetching logged-in employee:', error));
+  }, []);
 
   return (
     <div>
@@ -44,7 +52,6 @@ const UserHeader = () => {
                   <li><Link className="dropdown-item" to="/user-dashboard/compensatory-leave">Compensatory Leave</Link></li>
                 </ul>
               </li>
-
               <li className="nav-item dropdown">
                 <a className="nav-link dropdown-toggle" href="#" id="employeeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Joining-Leaving
@@ -53,7 +60,6 @@ const UserHeader = () => {
                   <li><Link className="dropdown-item" to="/user-dashboard/joining-list">Joining Data</Link></li>
                 </ul>
               </li>
-
 
               <li className="nav-item dropdown">
                 <a className="nav-link dropdown-toggle" href="#" id="employeeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -70,7 +76,14 @@ const UserHeader = () => {
             </ul>
 
             <ul className="navbar-nav ms-auto">
-              <li className="nav-item"> <button className="btn btn-link nav-link" onClick={logout}>Logout</button> </li>
+              {employee && (
+                <li className="nav-item me-3 navbar-text">
+                  ( {employee.firstName} {employee.lastName} : {employee.employeeId} )
+                </li>
+              )}
+              <li className="nav-item">
+                <button className="btn btn-link nav-link" onClick={logout}>Logout</button>
+              </li>
             </ul>
           </div>
         </div>

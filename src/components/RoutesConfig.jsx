@@ -7,7 +7,7 @@ import UserDashboard from './user/UserDashboard';
 
 const RoutesConfig = () => (
   <Routes>
-    <Route path="/" element={<Home />} />
+    <Route path="/*" element={<Home />} />
     <Route path="/login" element={<Login />} />
     <Route path="/admin-dashboard/*" element={<AdminDashboard />} />
     <Route path="/user-dashboard/*" element={<UserDashboard />} />

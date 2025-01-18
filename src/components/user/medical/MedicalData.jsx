@@ -11,45 +11,32 @@ const MedicalData = () => {
     useEffect(() => {
         const fetchAllData = async () => {
             try {
-                const employeeResponse = await axiosInstance.get(`user/employee/profile`);
-                setEmployeeDetails(employeeResponse.data);
+                const [employeeResponse, dependantsResponse, billsResponse] = await Promise.all([
+                    axiosInstance.get('user/employee/profile'),
+                    axiosInstance.get('user/dependant/employee'),
+                    axiosInstance.get('user/medical-entry/employee')
+                ]);
 
-                const dependantsResponse = await axiosInstance.get(`user/dependant/employee`);
+                setEmployeeDetails(employeeResponse.data);
                 setDependants(dependantsResponse.data);
-                console.log(dependants)
-                const billsResponse = await axiosInstance.get(`user/medical-entry/employee`);
                 setBills(billsResponse.data);
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
         };
-
         fetchAllData();
     }, []);
 
-    const getStatusBadgeClass = (status) => {
-        switch (status) {
-            case "APPROVED":
-                return "bg-success";
-            case "REJECTED":
-                return "bg-danger";
-            case "SUBMITTED":
-                return "bg-primary";
-            default:
-                return "bg-secondary";
-        }
-    };
+    const getStatusBadgeClass = (status) => ({
+        APPROVED: "bg-success",
+        REJECTED: "bg-danger",
+        SUBMITTED: "bg-primary"
+    }[status] || "bg-secondary");
 
-    const getActionBadgeClass = (status) => {
-        switch (status) {
-          case "APPROVED":
-            return "bg-success";    
-          case "REJECTED":
-            return "bg-danger";    
-          default:
-            return "bg-secondary";  
-        }
-      };
+    const getActionBadgeClass = (status) => ({
+        APPROVED: "bg-success",
+        REJECTED: "bg-danger"
+    }[status] || "bg-secondary");
 
     const edit = (medicalEntryId, dependantId) => {
         navigate(`/user-dashboard/edit-medical-entry/${medicalEntryId}/${dependantId}`);
