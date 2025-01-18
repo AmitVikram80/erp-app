@@ -10,6 +10,7 @@ const PrintJoiningPage = () => {
   const [printempId, setPrintEmpId] = useState({ empId: "" });
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [joinReports, setJoinReports] = useState([]);
 
   const [employees, setEmployees] = useState([]);
 
