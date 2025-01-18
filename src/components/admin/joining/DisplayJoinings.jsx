@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axiosInstance from "../../../api/axiosInstance";
+import axiosInstance from "../../../api/axiosInstance"; // Ensure this path is correct
 
 const DisplayJoinings = () => {
   const [joinings, setJoinings] = useState([]);
@@ -49,7 +49,7 @@ const DisplayJoinings = () => {
 
   // Remove joining from the list
   const removeJoining = (id) => {
-    let status = confirm("Do you want to Delete the Joining?");
+    let status = window.confirm("Do you want to Delete the Joining?");
     if (status && id) {
       deleteJoining(id).then(() => showJoining());
     }
@@ -105,7 +105,7 @@ const DisplayJoinings = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {joinings.map((joining) => (
+                    {Array.isArray(joinings) && joinings.map((joining) => (
                       <tr key={joining.joiningId}>
                         <td>{joining.joiningId}</td>
                         <td>
@@ -158,5 +158,4 @@ const DisplayJoinings = () => {
   );
 };
 
-// ORIGINAL
 export default DisplayJoinings;
