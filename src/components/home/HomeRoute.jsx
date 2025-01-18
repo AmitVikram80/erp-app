@@ -1,7 +1,7 @@
 import React from 'react'
 import { Routes, Route } from 'react-router-dom';
-import HelloWorld from './home/HelloWorld';
-import HelloWorld2 from './home/HelloWorld2';
+import HelloWorld from './HelloWorld';
+import HelloWorld2 from './HelloWorld2';
 
 const HomeRoute = () => (
     <Routes>
