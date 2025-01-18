@@ -56,6 +56,7 @@ const AdminDashboard = () => {
           <Route path="leave-data/:empId" element={<PrivateRoute> <LeaveApplication /> </PrivateRoute>} />
           <Route path="sanctioned-leaves" element={<PrivateRoute> <SanctionLeave /> </PrivateRoute>} />
           <Route path="admin-leave-data" element={<PrivateRoute> <LeaveAdmin /> </PrivateRoute>} />
+          
           <Route path='add-joining' element={<PrivateRoute> <JoiningPage /></PrivateRoute>} />
           <Route path='editjoining/:id' element={<PrivateRoute> <JoiningPage /></PrivateRoute>} />
           <Route path='joining-list' element={<PrivateRoute> <DisplayJoinings /></PrivateRoute>} />

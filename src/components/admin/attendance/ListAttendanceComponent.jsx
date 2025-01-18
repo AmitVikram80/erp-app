@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../../api/axiosInstance';
+import { useNavigate } from 'react-router-dom';
 
 const ListAttendanceComponent = () => {
   const [attendances, setAttendances] = useState([]);
@@ -14,7 +14,7 @@ const ListAttendanceComponent = () => {
     setLoading(true);
     setError('');
     try {
-      const response = await axiosInstance.get('/attendances');
+      const response = await axiosInstance.get('/admin/attendances');
       setAttendances(response.data);
     } catch (error) {
       console.error('Error fetching attendances:', error);

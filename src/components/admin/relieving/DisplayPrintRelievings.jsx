@@ -5,15 +5,27 @@ import axiosInstance from "../../../api/axiosInstance";
 const DisplayPrintRelievings = () => {
   const [printRelievings, setPrintRelievings] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredPrintRelievings, setFilteredPrintRelievings] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  // Fetch print relievings from API
+  // Fetch print relievings from the server using the appropriate API
   async function showPrintRelieving() {
-    const response = await axiosInstance.get("/admin/rprints");
-    const listPrintRelievings = response.data;
-    setPrintRelievings(listPrintRelievings);
-    setFilteredPrintRelievings(listPrintRelievings); // Initialize with all records
+    setLoading(true);
+    setError("");
+    try {
+      const endpoint = searchTerm.trim()
+        ? `/admin/getPrintRelievingReportByEmpId/${searchTerm}` // Adjusted API path if needed
+        : "/admin/rprints"; // Adjusted API path if needed
+      const response = await axiosInstance.get(endpoint);
+      const listPrintRelievings = response.data;
+      setPrintRelievings(listPrintRelievings); // Store printRelievings in the state
+    } catch (error) {
+      console.error("Error fetching print relievings:", error);
+      setError("Failed to fetch print relievings. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -25,33 +37,25 @@ const DisplayPrintRelievings = () => {
     setSearchTerm(e.target.value);
   };
 
-  // Filter print relievings based on search term
-  const handleSearch = () => {
-    if (searchTerm) {
-      const result = printRelievings.filter((printRelieving) =>
-        printRelieving.printId.toString().includes(searchTerm)
-      );
-      setFilteredPrintRelievings(result);
-    } else {
-      setFilteredPrintRelievings(printRelievings); // Reset to all records if search term is empty
-    }
+  // Filter print relievings when the search button is clicked
+  const handleSearchClick = () => {
+    showPrintRelieving(); // Fetch data based on search term
   };
 
+  // Delete print relieving
   const deletePrintRelieving = (printId) => {
-    return axiosInstance.delete(`admin/delPrintRelievingReport/${printId}`);
+    return axiosInstance.delete(`/admin/delPrintRelievingReport/${printId}`);
   };
 
+  // Remove print relieving from the list
   const removePrintRelieving = (id) => {
     let status = confirm("Do you want to Delete the Relieving?");
-    if (status) {
-      if (id) {
-        deletePrintRelieving(id).then(() => {
-          showPrintRelieving();
-        });
-      }
+    if (status && id) {
+      deletePrintRelieving(id).then(() => showPrintRelieving());
     }
   };
 
+  // Navigate to edit print relieving page
   const editPrintRelieving = (id) => {
     navigate(`/admin-dashboard/editprintrelieving/${id}`);
   };
@@ -60,22 +64,28 @@ const DisplayPrintRelievings = () => {
     <div>
       <div className="container-fluid">
         <div className="row justify-content-center">
-          <h3 className="text-center mt-3">Print Relieving List</h3>
-          <div><br/></div>
+          <h3 className="text-center mt-4">Print Relieving List</h3>
+          <div><br /></div>
           {/* Search Bar */}
           <div className="d-flex mb-3">
             <input
               type="text"
               className="form-control"
-              placeholder="Search by Print ID"
+              placeholder="Search by Employee ID"
               value={searchTerm}
               onChange={handleSearchChange}
-              style={{ width: "300px", marginRight: "10px" }}
+              style={{ width: "300px" }}
             />
-            <button className="btn btn-primary" onClick={handleSearch}>
-              Search
+            <button
+              className="btn btn-primary ms-2"
+              onClick={handleSearchClick}
+              disabled={loading}
+            >
+              {loading ? "Searching..." : "Search"}
             </button>
           </div>
+
+          {error && <div className="alert alert-danger">{error}</div>}
 
           <div className="col-md-12">
             <div className="card">
@@ -95,7 +105,7 @@ const DisplayPrintRelievings = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredPrintRelievings.map((printRelieving) => (
+                    {printRelievings.map((printRelieving) => (
                       <tr key={printRelieving.printId}>
                         <td>{printRelieving.printId}</td>
                         <td>
@@ -126,9 +136,7 @@ const DisplayPrintRelievings = () => {
                         <td>
                           <button
                             className="btn btn-success"
-                            onClick={() =>
-                              editPrintRelieving(printRelieving.printId)
-                            }
+                            onClick={() => editPrintRelieving(printRelieving.printId)}
                           >
                             Edit
                           </button>
@@ -136,9 +144,7 @@ const DisplayPrintRelievings = () => {
                         <td>
                           <button
                             className="btn btn-danger"
-                            onClick={() =>
-                              removePrintRelieving(printRelieving.printId)
-                            }
+                            onClick={() => removePrintRelieving(printRelieving.printId)}
                           >
                             Delete
                           </button>

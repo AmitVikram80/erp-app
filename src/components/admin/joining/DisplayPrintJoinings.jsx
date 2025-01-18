@@ -3,17 +3,29 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../../api/axiosInstance";
 
 const DisplayPrintJoinings = () => {
-  const [printJoinings, setPrintJoinings] = useState([]);
+  const [printJoinings, setPrintJoinings] = useState([]); // Renamed state
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredPrintJoinings, setFilteredPrintJoinings] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  // Fetch print joinings from API
+  // Fetch print joinings from the server using the appropriate API
   async function showPrintJoining() {
-    const response = await axiosInstance.get(`/admin/prints`);
-    const listPrintJoinings = response.data;
-    setPrintJoinings(listPrintJoinings);
-    setFilteredPrintJoinings(listPrintJoinings); // Initialize with all records
+    setLoading(true);
+    setError("");
+    try {
+      const endpoint = searchTerm.trim()
+        ? `/admin/getPrintJoiningReportByEmpId/${searchTerm}` // Adjusted API path if needed
+        : "/admin/prints"; // Adjusted API path if needed
+      const response = await axiosInstance.get(endpoint);
+      const listPrintJoinings = response.data;
+      setPrintJoinings(listPrintJoinings); // Store printJoinings in the state
+    } catch (error) {
+      console.error("Error fetching print joinings:", error);
+      setError("Failed to fetch print joinings. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -25,16 +37,9 @@ const DisplayPrintJoinings = () => {
     setSearchTerm(e.target.value);
   };
 
-  // Filter print joinings based on search term
-  const handleSearch = () => {
-    if (searchTerm) {
-      const result = printJoinings.filter((printJoining) =>
-        printJoining.printId.toString().includes(searchTerm)
-      );
-      setFilteredPrintJoinings(result);
-    } else {
-      setFilteredPrintJoinings(printJoinings); // Reset to all records if search term is empty
-    }
+  // Filter print joinings when the search button is clicked
+  const handleSearchClick = () => {
+    showPrintJoining(); // Fetch data based on search term
   };
 
   // Delete print joining
@@ -45,10 +50,8 @@ const DisplayPrintJoinings = () => {
   // Remove print joining from the list
   const removePrintJoining = (id) => {
     let status = confirm("Do you want to Delete the Print Joining?");
-    if (status) {
-      deletePrintJoining(id).then(() => {
-        showPrintJoining();
-      });
+    if (status && id) {
+      deletePrintJoining(id).then(() => showPrintJoining());
     }
   };
 
@@ -68,15 +71,21 @@ const DisplayPrintJoinings = () => {
             <input
               type="text"
               className="form-control"
-              placeholder="Search by Print ID"
+              placeholder="Search by Employee ID"
               value={searchTerm}
               onChange={handleSearchChange}
-              style={{ width: "300px", marginRight: "10px" }}
+              style={{ width: "300px" }}
             />
-            <button className="btn btn-primary" onClick={handleSearch}>
-              Search
+            <button
+              className="btn btn-primary ms-2"
+              onClick={handleSearchClick}
+              disabled={loading}
+            >
+              {loading ? "Searching..." : "Search"}
             </button>
           </div>
+
+          {error && <div className="alert alert-danger">{error}</div>}
 
           <div className="col-md-12">
             <div className="card">
@@ -95,7 +104,7 @@ const DisplayPrintJoinings = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredPrintJoinings.map((printJoining) => (
+                    {printJoinings.map((printJoining) => ( // Use printJoinings
                       <tr key={printJoining.printId}>
                         <td>{printJoining.printId}</td>
                         <td>
@@ -121,9 +130,7 @@ const DisplayPrintJoinings = () => {
                         <td>
                           <button
                             className="btn btn-success"
-                            onClick={() =>
-                              editPrintJoining(printJoining.printId)
-                            }
+                            onClick={() => editPrintJoining(printJoining.printId)}
                           >
                             Edit
                           </button>
@@ -131,9 +138,7 @@ const DisplayPrintJoinings = () => {
                         <td>
                           <button
                             className="btn btn-danger"
-                            onClick={() =>
-                              removePrintJoining(printJoining.printId)
-                            }
+                            onClick={() => removePrintJoining(printJoining.printId)}
                           >
                             Delete
                           </button>

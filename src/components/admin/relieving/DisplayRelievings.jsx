@@ -3,38 +3,42 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../../api/axiosInstance";
 
 const DisplayRelievings = () => {
-  const [relievings, setRelievings] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [filteredRelievings, setFilteredRelievings] = useState([]);
-  const navigate = useNavigate();
+  const [relievings, setRelievings] = useState([]); // State for storing all relievings
+  const [searchTerm, setSearchTerm] = useState(""); // State for search input
+  const [loading, setLoading] = useState(false); // State for loading status
+  const [error, setError] = useState(""); // State for error messages
+  const navigate = useNavigate(); // Navigation hook
 
-  // Fetch relievings from the server
+  // Fetch relievings from the server using the appropriate API
   async function showRelieving() {
-    const response = await axiosInstance.get("/admin/rreports");
-    const listRelievings = response.data;
-    setRelievings(listRelievings);
-    setFilteredRelievings(listRelievings); // Show all relievings by default
+    setLoading(true);
+    setError(""); // Clear error message before fetching
+    try {
+      const endpoint = searchTerm.trim()
+        ? `/admin/getRelievingReportByEmpId/${searchTerm}` // Fetch by search term if available
+        : "/admin/rreports"; // Fetch all relievings if no search term
+      const response = await axiosInstance.get(endpoint);
+      setRelievings(response.data); // Store the response data (relievings) in state
+    } catch (error) {
+      console.error("Error fetching relievings:", error);
+      setError("Failed to fetch relievings. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
-    showRelieving();
+    showRelieving(); // Fetch data when the component mounts or searchTerm changes
   }, []);
 
   // Handle search input change
   const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
+    setSearchTerm(e.target.value); // Update the search term
   };
 
   // Filter relievings when the search button is clicked
   const handleSearchClick = () => {
-    if (searchTerm.trim() === "") {
-      setFilteredRelievings(relievings); // If search term is empty, show all relievings
-    } else {
-      const filtered = relievings.filter((relieving) =>
-        relieving.relievingId.toString().includes(searchTerm)
-      );
-      setFilteredRelievings(filtered);
-    }
+    showRelieving(); // Fetch data based on search term
   };
 
   // Delete relieving
@@ -66,7 +70,7 @@ const DisplayRelievings = () => {
             <input
               type="text"
               className="form-control"
-              placeholder="Search by Relieving ID"
+              placeholder="Search by Employee ID"
               value={searchTerm}
               onChange={handleSearchChange}
               style={{ width: "300px" }}
@@ -74,10 +78,13 @@ const DisplayRelievings = () => {
             <button
               className="btn btn-primary ms-2"
               onClick={handleSearchClick}
+              disabled={loading}
             >
-              Search
+              {loading ? "Searching..." : "Search"}
             </button>
           </div>
+
+          {error && <div className="alert alert-danger">{error}</div>}
 
           <div className="col-md-12">
             <div className="card">
@@ -98,7 +105,7 @@ const DisplayRelievings = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredRelievings.map((relieving) => (
+                    {relievings.map((relieving) => (
                       <tr key={relieving.relievingId}>
                         <td>{relieving.relievingId}</td>
                         <td>
@@ -116,7 +123,9 @@ const DisplayRelievings = () => {
                         </td>
                         <td>{relieving.designation}</td>
                         <td>{relieving.reason}</td>
-                        <td>{relieving.status ? relieving.status : 'Pending'}</td>
+                        <td>
+                          {relieving.status ? relieving.status : "Pending"}
+                        </td>
                         <td>
                           {relieving.reladminId
                             ? relieving.reladminId.empId
@@ -134,9 +143,7 @@ const DisplayRelievings = () => {
                         <td>
                           <button
                             className="btn btn-danger"
-                            onClick={() =>
-                              removeRelieving(relieving.relievingId)
-                            }
+                            onClick={() => removeRelieving(relieving.relievingId)}
                           >
                             Delete
                           </button>

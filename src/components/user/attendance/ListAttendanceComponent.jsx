@@ -17,7 +17,7 @@ const ListAttendanceComponent = () => {
       setEmployeeDetails(employee);
 
       // Fetch and filter attendance records based on employee ID
-      const attendanceResponse = await axiosInstance.get("/attendances");
+      const attendanceResponse = await axiosInstance.get("/user/attendances");
       const allAttendances = attendanceResponse.data;
       const filteredAttendances = allAttendances.filter(
         (attendance) => attendance.employee.empId === employee.employeeId

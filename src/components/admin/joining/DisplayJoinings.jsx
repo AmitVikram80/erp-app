@@ -5,15 +5,27 @@ import axiosInstance from "../../../api/axiosInstance";
 const DisplayJoinings = () => {
   const [joinings, setJoinings] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredJoinings, setFilteredJoinings] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  // Fetch joinings from the server
+  // Fetch joinings from the server using the appropriate API
   async function showJoining() {
-    const response = await axiosInstance.get(`/admin/reports`);
-    const listjoinings = response.data;
-    setJoinings(listjoinings);
-    setFilteredJoinings(listjoinings); // Show all joinings by default
+    setLoading(true);
+    setError("");
+    try {
+      const endpoint = searchTerm.trim()
+        ? `/admin/getJoiningReportByEmpId/${searchTerm}`
+        : "/admin/reports";
+      const response = await axiosInstance.get(endpoint);
+      const listJoinings = response.data;
+      setJoinings(listJoinings); // Store joinings in the state
+    } catch (error) {
+      console.error("Error fetching joinings:", error);
+      setError("Failed to fetch joinings. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -27,14 +39,7 @@ const DisplayJoinings = () => {
 
   // Filter joinings when the search button is clicked
   const handleSearchClick = () => {
-    if (searchTerm.trim() === "") {
-      setFilteredJoinings(joinings); // If search term is empty, show all joinings
-    } else {
-      const filtered = joinings.filter((joining) =>
-        joining.joiningId.toString().includes(searchTerm)
-      );
-      setFilteredJoinings(filtered);
-    }
+    showJoining(); // Fetch data based on search term
   };
 
   // Delete joining
@@ -66,7 +71,7 @@ const DisplayJoinings = () => {
             <input
               type="text"
               className="form-control"
-              placeholder="Search by Joining ID"
+              placeholder="Search by Employee ID"
               value={searchTerm}
               onChange={handleSearchChange}
               style={{ width: "300px" }}
@@ -74,10 +79,13 @@ const DisplayJoinings = () => {
             <button
               className="btn btn-primary ms-2"
               onClick={handleSearchClick}
+              disabled={loading}
             >
-              Search
+              {loading ? "Searching..." : "Search"}
             </button>
           </div>
+
+          {error && <div className="alert alert-danger">{error}</div>}
 
           <div className="col-md-12">
             <div className="card">
@@ -97,7 +105,7 @@ const DisplayJoinings = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredJoinings.map((joining) => (
+                    {joinings.map((joining) => (
                       <tr key={joining.joiningId}>
                         <td>{joining.joiningId}</td>
                         <td>
@@ -149,5 +157,6 @@ const DisplayJoinings = () => {
     </div>
   );
 };
-//ORIGINAL
+
+// ORIGINAL
 export default DisplayJoinings;

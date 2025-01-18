@@ -14,7 +14,7 @@ const ListBiometricComponent = () => {
     setLoading(true);
     setError('');
     try {
-      const response = await axiosInstance.get('/bioattendances');
+      const response = await axiosInstance.get('/admin/bioattendances');
       setBioAttendances(response.data);
     } catch (error) {
       console.error('Error fetching biometric attendance:', error);
@@ -25,14 +25,14 @@ const ListBiometricComponent = () => {
   };
 
   // Filtered biometric attendance records based on search input
-  const filteredBioAttendances = Array.isArray(bioAttendances) ? bioAttendances.filter((attendance) => {
+  const filteredBioAttendances = bioAttendances.filter((attendance) =>{
     const fullName =
       `${attendance.employee.firstName} ${attendance.employee.lastName}`.toLowerCase();
     return (
       fullName.includes(search.toLowerCase()) ||
       attendance.employee.empId.toString().includes(search)
     );
-  }) : [];
+  });
 
   useEffect(() => {
     fetchBioAttendances();

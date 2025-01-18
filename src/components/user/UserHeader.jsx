@@ -51,8 +51,6 @@ const UserHeader = () => {
                 </a>
                 <ul className="dropdown-menu" aria-labelledby="employeeDropdown">
                   <li><Link className="dropdown-item" to="/user-dashboard/joining-list">Joining Data</Link></li>
-                  <li><Link className="dropdown-item" to="/user-dashboard/relieving-list">Relieving Data</Link></li>
-                  <li><Link className="dropdown-item" to="/user-dashboard/add-relieving">Relieving Page</Link></li>
                 </ul>
               </li>
 

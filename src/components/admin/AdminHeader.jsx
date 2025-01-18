@@ -59,17 +59,25 @@ const AdminHeader = () => {
                             </li>
                             <li className="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle" href="#" id="joiningDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Joining & Leaving
+                                    Joinings
                                 </a>
                                 <ul className="dropdown-menu" aria-labelledby="joiningDropdown">
-                                    <li><Link className="dropdown-item" to="/admin-dashboard/add-joining">Add Employee Joining</Link></li>
-                                    <li><Link className="dropdown-item" to="/admin-dashboard/joining-list">Employee Joining List</Link></li>
-                                    <li><Link className="dropdown-item" to="/admin-dashboard/add-printjoining">Add Print Joining</Link></li>
-                                    <li><Link className="dropdown-item" to="/admin-dashboard/printjoining-list">Print Joining List</Link></li>
-                                    <li><Link className="dropdown-item" to="/admin-dashboard/add-relieving">Add Employee Relieving</Link></li>
-                                    <li><Link className="dropdown-item" to="/admin-dashboard/relieving-list">Employee Relieving List</Link></li>
-                                    <li><Link className="dropdown-item" to="/admin-dashboard/add-printrelieving">Add Print Relieving</Link></li>
-                                    <li><Link className="dropdown-item" to="/admin-dashboard/printrelieving-list">Print Relieving List</Link></li>
+                                    <li><Link className="dropdown-item" to="/admin-dashboard/add-joining">Add Joinings</Link></li>
+                                    <li><Link className="dropdown-item" to="/admin-dashboard/joining-list">Joining List</Link></li>
+                                    <li><Link className="dropdown-item" to="/admin-dashboard/add-printjoining">Add Prints</Link></li>
+                                    <li><Link className="dropdown-item" to="/admin-dashboard/printjoining-list">Printed List</Link></li>                       
+                                </ul>
+                            </li>
+
+                            <li className="nav-item dropdown">
+                                <a className="nav-link dropdown-toggle" href="#" id="joiningDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Relievings
+                                </a>
+                                <ul className="dropdown-menu" aria-labelledby="joiningDropdown">
+                                    <li><Link className="dropdown-item" to="/admin-dashboard/add-relieving">Add Relievings</Link></li>
+                                    <li><Link className="dropdown-item" to="/admin-dashboard/relieving-list">Relieving List</Link></li>
+                                    <li><Link className="dropdown-item" to="/admin-dashboard/add-printrelieving">Print Relievings</Link></li>
+                                    <li><Link className="dropdown-item" to="/admin-dashboard/printrelieving-list">Printed List</Link></li>
                                     
                                 </ul>
                             </li>

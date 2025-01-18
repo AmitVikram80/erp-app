@@ -15,8 +15,6 @@ import ApplyCompensatoryLeave from './leave/ApplyCompensatoryLeave';
 import LeaveApplication from './leave/LeaveApplication';
 import CompensatoryLeave from './leave/CompensatoryLeave';
 import DisplayJoinings from './joining-leaving/DisplayJoinings'
-import DisplayRelievings from './joining-leaving/DisplayRelievings'
-import RelievingPage from './joining-leaving/RelievingPage'
 import AddAttendanceComponent from './attendance/AddAttendanceComponent';
 import ListAttendanceComponent from './attendance/ListAttendanceComponent';
 import AddBiometricComponent from './attendance/AddBiometricComponent';
@@ -43,8 +41,6 @@ const UserDashboard = () => (
         <Route path="compensatory-leave" element={<PrivateRoute> <CompensatoryLeave /> </PrivateRoute>} />
 
         <Route path="joining-list" element={<PrivateRoute> < DisplayJoinings/> </PrivateRoute>} />
-        <Route path="relieving-list" element={<PrivateRoute> < DisplayRelievings/> </PrivateRoute>} />
-        <Route path="add-relieving" element={<PrivateRoute> < RelievingPage/> </PrivateRoute>} />
 
         <Route path="createattendance" element={<PrivateRoute> <AddAttendanceComponent /> </PrivateRoute> } />
         <Route path="attendances" element={<PrivateRoute> <ListAttendanceComponent /> </PrivateRoute>}/>
