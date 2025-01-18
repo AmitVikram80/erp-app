@@ -20,37 +20,40 @@ import ListAttendanceComponent from './attendance/ListAttendanceComponent';
 import AddBiometricComponent from './attendance/AddBiometricComponent';
 import ListBiometricComponent from './attendance/ListBiometricComponent';
 
+const UserDashboard = () => {
+  const routes = [
+    { path: "/", element: <UserHome /> },
+    { path: "profile", element: <EmployeeProfile /> },
+    { path: "tasks", element: <EmployeeTasks /> },
+    { path: "add-dependant", element: <AddDependant /> },
+    { path: "medical-data", element: <MedicalData /> },
+    { path: "add-medical-entry", element: <AddMedicalEntry /> },
+    { path: "edit-medical-entry/:medicalEntryId/:dependantId", element: <EditMedicalEntry /> },
+    { path: "apply-leave", element: <ApplyLeave /> },
+    { path: "modify-leave", element: <ModifyLeave /> },
+    { path: "apply-compensatory-leave", element: <ApplyCompensatoryLeave /> },
+    { path: "leave-data", element: <LeaveApplication /> },
+    { path: "compensatory-leave", element: <CompensatoryLeave /> },
+    { path: "joining-list", element: <DisplayJoinings /> },
+    { path: "createattendance", element: <AddAttendanceComponent /> },
+    { path: "attendances", element: <ListAttendanceComponent /> },
+    { path: "editattendance/:id", element: <AddAttendanceComponent /> },
+    { path: "createbioattendance", element: <AddBiometricComponent /> },
+    { path: "bioattendances", element: <ListBiometricComponent /> }
+  ];
 
-const UserDashboard = () => (
-  <div>
-    <EmployeeHeader />
-    <main>
-      <Routes>
-        <Route path="/" element={<UserHome />} />
-        <Route path="profile" element={<EmployeeProfile />} />
-        <Route path="tasks" element={<EmployeeTasks />} />
-        <Route path='add-dependant' element={<AddDependant />} />
-        <Route path='medical-data' element={<MedicalData />} />
-        <Route path='add-medical-entry' element={<AddMedicalEntry />} />
-        <Route path='edit-medical-entry/:medicalEntryId/:dependantId' element={<EditMedicalEntry />} />
-        
-        <Route path="apply-leave" element={<PrivateRoute> <ApplyLeave /> </PrivateRoute>} />
-        <Route path="modify-leave" element={<PrivateRoute> <ModifyLeave /> </PrivateRoute>} />
-        <Route path="apply-compensatory-leave" element={<PrivateRoute> <ApplyCompensatoryLeave /> </PrivateRoute>} />
-        <Route path="leave-data" element={<PrivateRoute> <LeaveApplication /> </PrivateRoute>} />
-        <Route path="compensatory-leave" element={<PrivateRoute> <CompensatoryLeave /> </PrivateRoute>} />
-
-        <Route path="joining-list" element={<PrivateRoute> < DisplayJoinings/> </PrivateRoute>} />
-
-        <Route path="createattendance" element={<PrivateRoute> <AddAttendanceComponent /> </PrivateRoute> } />
-        <Route path="attendances" element={<PrivateRoute> <ListAttendanceComponent /> </PrivateRoute>}/>
-        <Route path="editattendance/:id" element={<PrivateRoute> <AddAttendanceComponent /> </PrivateRoute>} />
-        <Route path="createbioattendance" element={<PrivateRoute> <AddBiometricComponent /> </PrivateRoute>} />
-        <Route path='bioattendances' element={<PrivateRoute> <ListBiometricComponent /> </PrivateRoute>} />
-
-      </Routes>
-    </main>
-  </div>
-);
+  return (
+    <div>
+      <EmployeeHeader />
+      <main>
+        <Routes>
+          {routes.map(({ path, element }) => (
+            <Route key={path} path={path} element={<PrivateRoute>{element}</PrivateRoute>} />
+          ))}
+        </Routes>
+      </main>
+    </div>
+  );
+};
 
 export default UserDashboard;

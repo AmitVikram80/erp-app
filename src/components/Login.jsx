@@ -17,25 +17,14 @@ const Login = () => {
     e.preventDefault();
     try {
       const endpoint = role === 'admin' ? '/admin/authenticate' : '/user/authenticate';
-      const response = await axiosInstance.post(endpoint, { username, password });
-      localStorage.setItem('token', response.data);
-
-      if (role === 'admin') {
-        navigate('/admin-dashboard/');
-      } else {
-        navigate('/user-dashboard/');
-      }
+      const { data } = await axiosInstance.post(endpoint, { username, password });
+      localStorage.setItem('token', data);
+      navigate(role === 'admin' ? '/admin-dashboard/' : '/user-dashboard/');
     } catch (error) {
-      if (error.response) {
-        console.error('Error response from server:', error.response.data);
-        setError('Invalid username or password');
-      } else if (error.request) {
-        console.error('No response received:', error.request);
-        setError('Network error: Please check your connection and try again.');
-      } else {
-        console.error('Error during request setup:', error.message);
-        setError('Unexpected error occurred: ' + error.message);
-      }
+      const errorMsg = error.response ? 'Invalid username or password' :
+                        error.request ? 'Backend error: Please check the backend connection and try again.' :
+                        'Unexpected error occurred: ' + error.message;
+      setError(errorMsg);
     }
   };
 
@@ -77,6 +66,7 @@ const Login = () => {
           </select>
         </div>
         <button type="submit" className="btn btn-primary">Login</button>
+        <button type="button" className="btn btn-secondary ms-2" onClick={() => navigate('/')}>Back</button>
         {error && <div className="alert alert-danger mt-3">{error}</div>}
       </form>
     </div>
