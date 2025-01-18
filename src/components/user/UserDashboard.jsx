@@ -14,7 +14,7 @@ import ModifyLeave from './leave/ModifyLeave';
 import ApplyCompensatoryLeave from './leave/ApplyCompensatoryLeave';
 import LeaveApplication from './leave/LeaveApplication';
 import CompensatoryLeave from './leave/CompensatoryLeave';
-import DisplayJoinings from './joining-leaving/DisplayJoinings'
+import DisplayJoinings from './joining/DisplayJoinings'
 import AddAttendanceComponent from './attendance/AddAttendanceComponent';
 import ListAttendanceComponent from './attendance/ListAttendanceComponent';
 import AddBiometricComponent from './attendance/AddBiometricComponent';

@@ -9,10 +9,10 @@ const DisplayJoinings = () => {
   const navigate = useNavigate();
 
   // Fetch joinings and filter based on the logged-in employee
-  const fetchJoinings = async (employeeId) => {
+  const fetchJoinings = async () => {
     try {
       const response = await axiosInstance.get(`/user/getJoiningReport`);
-      const filtered = response.data;
+      const filtered = Array.isArray(response.data) ? response.data : [];
 
       setJoinings(filtered);
       setFilteredJoinings(filtered);
