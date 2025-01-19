@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../../api/axiosInstance";
 
 const MedicalData = () => {
@@ -16,7 +16,6 @@ const MedicalData = () => {
                     axiosInstance.get('user/dependant/employee'),
                     axiosInstance.get('user/medical-entry/employee')
                 ]);
-
                 setEmployeeDetails(employeeResponse.data);
                 setDependants(dependantsResponse.data);
                 setBills(billsResponse.data);
@@ -38,9 +37,7 @@ const MedicalData = () => {
         REJECTED: "bg-danger"
     }[status] || "bg-secondary");
 
-    const edit = (medicalEntryId, dependantId) => {
-        navigate(`/user-dashboard/edit-medical-entry/${medicalEntryId}/${dependantId}`);
-    };
+    const edit = (medicalEntryId) => navigate(`/user-dashboard/edit-medical-entry/${medicalEntryId}`);
 
     return (
         <div className="container py-5">
@@ -48,9 +45,7 @@ const MedicalData = () => {
             <div className="row g-4">
                 <div className="col-lg-6">
                     <div className="card shadow-sm">
-                        <div className="card-header primary-bg">
-                            Employee Details
-                        </div>
+                        <div className="card-header primary-bg">Employee Details</div>
                         <div className="card-body">
                             <p><strong>Name:</strong> {employeeDetails?.firstName || "N/A"} {employeeDetails?.lastName || "N/A"}</p>
                             <p><strong>Email:</strong> {employeeDetails?.email || "N/A"}</p>
@@ -59,12 +54,11 @@ const MedicalData = () => {
                         </div>
                     </div>
                 </div>
-
                 <div className="col-lg-6">
                     <div className="card shadow-sm">
                         <div className="card-header secondary-bg">
                             Dependants
-                            <button className="btn btn-outline-light btn-sm float-end" onClick={() => navigate(`/add/${empId}`)}>Add Dependant +</button>
+                            <button className="btn btn-outline-light btn-sm float-end" onClick={() => navigate(`/add/${employeeDetails.employeeId}`)}>Add Dependant +</button>
                         </div>
                         <div className="card-body">
                             {dependants.length > 0 ? (
@@ -82,7 +76,6 @@ const MedicalData = () => {
                     </div>
                 </div>
             </div>
-
             <div className="mt-5">
                 <table className="table table-bordered shadow-sm">
                     <thead className="primary-bg text-white">
@@ -127,7 +120,7 @@ const MedicalData = () => {
                                         {bill.status === "SUBMITTED" ? (
                                             <button
                                                 className="btn btn-outline-warning"
-                                                onClick={() => edit(bill.medicalEntryId, bill.dependantId)}
+                                                onClick={() => edit(bill.medicalEntryId)}
                                                 title="Edit this entry"
                                             >
                                                 Edit

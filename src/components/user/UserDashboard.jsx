@@ -7,8 +7,7 @@ import EmployeeTasks from './employee/EmployeeTasks';
 import UserHome from './UserHome';
 import AddDependant from './medical/AddDependant';
 import MedicalData from './medical/MedicalData';
-import AddMedicalEntry from './medical/AddMedicalEntry';
-import EditMedicalEntry from './medical/EditMedicalEntry';
+import MedicalEntryForm from './medical/MedicalEntryForm';
 import ApplyLeave from './leave/ApplyLeave';
 import ModifyLeave from './leave/ModifyLeave';
 import ApplyCompensatoryLeave from './leave/ApplyCompensatoryLeave';
@@ -27,8 +26,8 @@ const UserDashboard = () => {
     { path: "tasks", element: <EmployeeTasks /> },
     { path: "add-dependant", element: <AddDependant /> },
     { path: "medical-data", element: <MedicalData /> },
-    { path: "add-medical-entry", element: <AddMedicalEntry /> },
-    { path: "edit-medical-entry/:medicalEntryId/:dependantId", element: <EditMedicalEntry /> },
+    { path: "add-medical-entry", element: <MedicalEntryForm isEdit={false}  /> },
+    { path: "edit-medical-entry/:medicalEntryId", element: <MedicalEntryForm isEdit={true}  /> },
     { path: "apply-leave", element: <ApplyLeave /> },
     { path: "modify-leave", element: <ModifyLeave /> },
     { path: "apply-compensatory-leave", element: <ApplyCompensatoryLeave /> },
