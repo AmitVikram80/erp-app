@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axiosInstance from "../../../api/axiosInstance";
 
-const MedicalEntryForm = ({ isEdit }) => {
+const MedicalEntryForm = () => {
   const [employeeDetails, setEmployeeDetails] = useState({ name: "", email: "" });
   const [dependants, setDependants] = useState([]);
   const [form, setForm] = useState({ dependantId: "", requestAmount: "" });
@@ -25,7 +25,7 @@ const MedicalEntryForm = ({ isEdit }) => {
         });
         setDependants(dependantsData || []);
 
-        if (isEdit) {
+        if (medicalEntryId) {
           const { data } = await axiosInstance.get(`/medical-entry/medicalentryid/${medicalEntryId}`);
           setForm({ dependantId: data.dependantId, requestAmount: data.requestAmount });
         }
@@ -38,7 +38,7 @@ const MedicalEntryForm = ({ isEdit }) => {
     };
 
     fetchDetails();
-  }, [isEdit, medicalEntryId]);
+  }, [medicalEntryId]);
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
@@ -67,17 +67,17 @@ const MedicalEntryForm = ({ isEdit }) => {
 
     try {
       setLoading(true);
-      const response = isEdit
+      const response = medicalEntryId
         ? await axiosInstance.put(`/medical-entry/update`, formData, { headers: { 'Content-Type': 'multipart/form-data' } })
         : await axiosInstance.post(`/medical-entry/add`, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
 
       if (response.status === 200) {
-        alert(`Medical entry ${isEdit ? "updated" : "added"} successfully`);
+        alert(`Medical entry ${medicalEntryId ? "updated" : "added"} successfully`);
         navigate(`/user-dashboard/medical-data`);
       }
     } catch (error) {
-      console.error(`Error ${isEdit ? "updating" : "adding"} medical entry:`, error);
-      alert(`Error ${isEdit ? "updating" : "adding"} medical entry. Please try again.`);
+      console.error(`Error ${medicalEntryId ? "updating" : "adding"} medical entry:`, error);
+      alert(`Error ${medicalEntryId ? "updating" : "adding"} medical entry. Please try again.`);
     } finally {
       setLoading(false);
     }
@@ -85,7 +85,7 @@ const MedicalEntryForm = ({ isEdit }) => {
 
   return (
     <form onSubmit={handleSubmit} className="container mt-4">
-      <h2 className="mb-4">{isEdit ? "Edit" : "Add"} Medical Entry</h2>
+      <h2 className="mb-4">{medicalEntryId ? "Edit" : "Add"} Medical Entry</h2>
       <div className="mb-3">
         <label htmlFor="empName" className="form-label">Employee Name</label>
         <input type="text" className="form-control" id="empName" value={employeeDetails.name} readOnly />
