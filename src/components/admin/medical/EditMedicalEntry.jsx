@@ -103,7 +103,7 @@ const EditMedicalEntry = () => {
                                     />
                                 </div>
                                 <div className="d-flex justify-content-between">
-                                    <button type="submit" className="btn btn-custom">Update</button>
+                                    <button type="submit" className="btn btn-primary">Update</button>
                                     <button
                                         type="button"
                                         className="btn btn-secondary"
