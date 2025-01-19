@@ -53,7 +53,7 @@ const EmployeeMedicalData = () => {
       };
 
     const edit = (medicalEntryId, dependantId) => {
-        navigate(`/edit-medical-entry/${medicalEntryId}/${dependantId}`);
+        navigate(`/admin-dashboard/edit-medical-entry/${medicalEntryId}/${dependantId}`);
     };
 
     return (
